@@ -20,7 +20,8 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
-        holder.bind(item)
+        val priorItem = if (position > 0) data[position - 1] else null
+        holder.bind(item, priorItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,14 +29,31 @@ class ContactAdapter : RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
     }
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val headerLetter: TextView = itemView.findViewById(R.id.text_header_letter)
         val contactName: TextView = itemView.findViewById(R.id.text_contact_name)
         val contactPhone: TextView = itemView.findViewById(R.id.text_contact_phone)
 
-        fun bind(item: Contact) {
+        fun bind(item: Contact, priorItem: Contact?) {
             val res = itemView.context.resources
+            /** Temporary use ID as section letter  **/
+//            val curLetter = item.nameFirst.substring(0, 1)
+            val curLetter = item.contactId.toString().substring(0, 1)
             val fullName = "${item.contactId}: ${item.nameFirst} ${item.nameLast}"
+
+            headerLetter.text = curLetter
             contactName.text = fullName
             contactPhone.text = item.phone
+
+            /** Section in the Contact list **/
+            headerLetter.visibility = View.VISIBLE
+            priorItem?.let {
+                /** Temporary use ID as section letter  **/
+                if (curLetter == it.contactId.toString().substring(0, 1)) {
+//                if (curLetter == it.nameFirst.substring(0, 1)) {
+                    // if the first letter is the same as the prior contact name, hide header text view
+                    headerLetter.visibility = View.GONE
+                }
+            }
         }
 
         companion object {
