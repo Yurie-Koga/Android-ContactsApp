@@ -37,4 +37,5 @@ fun formatContacts(contacts: List<Contact>, resources: Resources) : Spanned {
     }
 }
 
-class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)
+/** ContactAdapter for Contact ID **/
+//class TextItemViewHolder(val textView: TextView): RecyclerView.ViewHolder(textView)

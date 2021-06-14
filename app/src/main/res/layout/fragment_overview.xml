@@ -14,17 +14,6 @@
         android:layout_height="match_parent"
         tools:context=".ui.OverviewFragment">
 
-<!--        <TextView-->
-<!--            android:id="@+id/textview_first"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@{overviewViewModel.contactsString}"-->
-<!--            tools:text="@string/hello_first_fragment"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/button_first"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contact_list"
             android:layout_width="match_parent"
@@ -35,6 +24,9 @@
             app:layout_constraintBottom_toTopOf="@+id/button_first"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+
+<!--        This Button will be removed once RecyclerView has Click listner -->
+<!--        android:onClick="@{() -> overviewViewModel.onAddNewContact()}"-->
         <Button
             android:id="@+id/button_first"
             android:layout_width="wrap_content"
@@ -44,6 +36,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+<!--        Added constraints instead of gravity-->
+<!--        android:layout_gravity="bottom|end"-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/fab_margin"
+            app:srcCompat="@android:drawable/ic_menu_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

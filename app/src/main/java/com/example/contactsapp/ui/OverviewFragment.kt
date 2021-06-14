@@ -63,8 +63,9 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        /** Move to DetailFragment : will be implemented to the action button on activity_main.xml **/
+        binding.fab.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
         }
     }
 

@@ -25,7 +25,7 @@
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:background="@color/purple_200"
+            android:background="@color/teal_200"
             app:contactSection="@{contact}"
             tools:text="A" />
 
