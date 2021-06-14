@@ -50,7 +50,7 @@ class OverviewFragment : Fragment() {
 
         overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 
