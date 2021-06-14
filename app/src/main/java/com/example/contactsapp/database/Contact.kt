@@ -10,11 +10,11 @@ data class Contact(
     var contactId: Long = 0L,
 
     @ColumnInfo(name = "name_first")
-    var nameFirst: String = "default_first_name",
+    var nameFirst: String = "nameF",
 
     @ColumnInfo(name = "name_last")
-    var nameLast: String = "default_last_name",
+    var nameLast: String = "nameL",
 
     @ColumnInfo(name = "phone_string")
-    var phone: String = "default_phone"
+    var phone: String = "123-456-7890"
 )

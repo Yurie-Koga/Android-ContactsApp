@@ -22,7 +22,9 @@ class OverviewViewModel(
 
     private var latestContact = MutableLiveData<Contact?>()
 
-    private val contacts = database.getAllContacts()
+    val contacts = database.getAllContacts()
+
+    /** Convert Contacts data to Spanned for displaying **/
     val contactsString = Transformations.map(contacts) { contacts ->
         formatContacts(contacts, application.resources)
     }

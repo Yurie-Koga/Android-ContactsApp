@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-
+    /** Downgraded some dependencies to handle Room DB issues, to get access to kotlin.collections components **/
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -51,7 +51,7 @@ dependencies {
 //    implementation 'androidx.appcompat:appcompat:1.3.0'
 //    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "androidx.appcompat:appcompat:1.2.0"
-    implementation "androidx.fragment:fragment:1.2.5"
+//    implementation "androidx.fragment:fragment:1.2.5"
     implementation "androidx.constraintlayout:constraintlayout:2.0.0-rc1"
 
     // Android KTX
@@ -75,6 +75,10 @@ dependencies {
     // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+
+    // RecyclerView
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
 
     // Testing
     testImplementation 'junit:junit:4.+'

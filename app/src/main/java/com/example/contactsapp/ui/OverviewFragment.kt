@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.contactsapp.R
 import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.databinding.FragmentOverviewBinding
+import com.example.contactsapp.util.ContactAdapter
 import com.example.contactsapp.viewmodels.OverviewViewModel
 import com.example.contactsapp.viewmodels.OverviewViewModelFactory
 
@@ -32,6 +34,7 @@ class OverviewFragment : Fragment() {
 
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
+        /** Bind Database and ViewModel **/
         val application = requireNotNull(this.activity).application
         val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
         val viewModelFactory = OverviewViewModelFactory(dataSource, application)
@@ -41,6 +44,17 @@ class OverviewFragment : Fragment() {
         binding.setLifecycleOwner(this)
         binding.overviewViewModel = overviewViewModel
 
+        /** Bind Database and RecyclerView **/
+        val adapter = ContactAdapter()
+        binding.contactList.adapter = adapter
+
+        overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.data = it
+            }
+        })
+
+        /** Display Option menu on this fragment **/
         setHasOptionsMenu(true)
         return binding.root
 
