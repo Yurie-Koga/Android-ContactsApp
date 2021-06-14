@@ -25,4 +25,7 @@ interface ContactDatabaseDao {
 
     @Query("SELECT * FROM contact_table ORDER BY contactId")
     fun getAllContacts(): LiveData<List<Contact>>
+
+    @Query("SELECT * FROM contact_table WHERE contactId = :key")
+    suspend fun getContactWithId(key: Long): LiveData<Contact>
 }

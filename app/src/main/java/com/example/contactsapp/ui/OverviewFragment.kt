@@ -63,9 +63,14 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** Move to DetailFragment : will be implemented to the action button on activity_main.xml **/
+        /** FAB Button **/
         binding.fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+        }
+
+        /** Contacts List : Will update for RecyclerView **/
+        binding.contactList.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_OverviewFragment_to_ContactDetailFragment)
         }
     }
 
