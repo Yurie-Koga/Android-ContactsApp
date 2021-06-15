@@ -27,5 +27,5 @@ interface ContactDatabaseDao {
     fun getAllContacts(): LiveData<List<Contact>>
 
     @Query("SELECT * FROM contact_table WHERE contactId = :key")
-    suspend fun getContactWithId(key: Long): LiveData<Contact>
+    fun getContactWithId(key: Long): LiveData<Contact>
 }

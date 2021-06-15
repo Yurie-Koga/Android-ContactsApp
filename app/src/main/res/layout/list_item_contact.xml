@@ -7,12 +7,18 @@
         <variable
             name="contact"
             type="com.example.contactsapp.database.Contact" />
+
+<!--        Click Listener for RecyclerView-->
+        <variable
+            name="clickListener"
+            type="com.example.contactsapp.util.ContactListener" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:onClick="@{() -> clickListener.onClick(contact)}">
 
 
         <TextView

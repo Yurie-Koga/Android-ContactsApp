@@ -7,8 +7,9 @@ buildscript {
         room_version = '2.2.5'
         coroutine_version = '1.3.7'
         gradleVersion = '4.0.1'
-//        navigationVersion = '1.0.0-alpha08'
-        navigationVersion = '1.0.0'
+//        navigationVersion = '1.0.0-alpha08'   // default
+//        navigationVersion = '1.0.0' // having an issue type mismatch when get argument from bundle: inferred type is Bundle? but Bundle was expected
+        navigationVersion = '1.0.0-alpha07'
         dataBindingCompilerVersion = gradleVersion // Always need to be the same.
     }
 

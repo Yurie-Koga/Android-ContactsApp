@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/AddContactFragment"
         android:name="com.example.contactsapp.ui.AddContactFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/add_contact_fragment_label"
         tools:layout="@layout/fragment_add_contact">
 
         <action
@@ -31,6 +31,13 @@
     <fragment
         android:id="@+id/ContactDetailFragment"
         android:name="com.example.contactsapp.ui.ContactDetailFragment"
-        android:label="Contact Detail Fragment"
-        tools:layout="@layout/fragment_contact_detail" />
+        android:label="@string/contact_detail_fragment_label"
+        tools:layout="@layout/fragment_contact_detail" >
+        <argument
+            android:name="contactKey"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_ContactDetailFragment_to_OverviewFragment"
+            app:destination="@id/OverviewFragment" />
+    </fragment>
 </navigation>

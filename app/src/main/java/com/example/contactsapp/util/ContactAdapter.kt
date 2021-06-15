@@ -10,12 +10,12 @@ import com.example.contactsapp.database.Contact
 import com.example.contactsapp.databinding.ListItemContactBinding
 
 /** ContactAdapter for all the Contact data **/
-class ContactAdapter : ListAdapter<Contact, ContactAdapter.ViewHolder>(ContactDiffCallback()) {
+class ContactAdapter(val clickListener: ContactListener) : ListAdapter<Contact, ContactAdapter.ViewHolder>(ContactDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val priorItem = if (position > 0) getItem(position - 1) else null
-        holder.bind(item, priorItem)
+        holder.bind(item, priorItem, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,9 +23,10 @@ class ContactAdapter : ListAdapter<Contact, ContactAdapter.ViewHolder>(ContactDi
     }
 
     class ViewHolder private constructor(val binding: ListItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Contact, priorItem: Contact?) {
+        fun bind(item: Contact, priorItem: Contact?, clickListener: ContactListener) {
             binding.contact = item
             binding.executePendingBindings()
+            binding.clickListener = clickListener
 
             /** Temporary use ID as section letter  **/
 //            val curLetter = item.nameFirst.substring(0, 1)
@@ -62,6 +63,12 @@ class ContactDiffCallback: DiffUtil.ItemCallback<Contact>() {
         return oldItem == newItem
     }
 }
+
+/** Click Listener for RecyclerView **/
+class ContactListener(val clickListener: (contactId: Long) -> Unit) {
+    fun onClick(contact: Contact) = clickListener(contact.contactId)
+}
+
 
 /** ContactAdapter for Contact ID **/
 /*

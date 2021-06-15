@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    tools:context=".ui.ContactDetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/detail_text_contact_name"
-        android:layout_width="wrap_content"
+    <data>
+
+        <variable
+            name="contactDetailViewModel"
+            type="com.example.contactsapp.viewmodels.ContactDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginVertical="@dimen/detail_margin_vertical"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        android:text="FullName will be here"
-        tools:text="Contact Name" />
+        android:orientation="vertical"
+        tools:context=".ui.ContactDetailFragment">
 
-    <TextView
-        android:id="@+id/detail_text_contact_gender"
-        style="@style/detail_sub_info"
-        tools:text="male" />
+        <TextView
+            android:id="@+id/detail_text_contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/detail_margin_vertical"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            app:fullName="@{contactDetailViewModel.contact}"
+            tools:text="Contact Name" />
 
-    <TextView
-        android:id="@+id/detail_text_contact_phone"
-        style="@style/detail_sub_info"
-        tools:text="123-456-7890" />
+        <TextView
+            android:id="@+id/detail_text_contact_gender"
+            style="@style/detail_sub_info"
+            tools:text="male" />
+
+        <TextView
+            android:id="@+id/detail_text_contact_phone"
+            style="@style/detail_sub_info"
+            app:phoneNumber="@{contactDetailViewModel.contact}"
+            tools:text="123-456-7890" />
 
 
-    <TextView
-        android:id="@+id/detail_text_contact_email"
-        style="@style/detail_sub_info"
-        tools:text="aaaa.bbb@example.xyz" />
+        <TextView
+            android:id="@+id/detail_text_contact_email"
+            style="@style/detail_sub_info"
+            tools:text="aaaa.bbb@example.xyz" />
 
-    <TextView
-        android:id="@+id/detail_text_contact_address"
-        style="@style/detail_sub_info"
-        tools:text="Public Market, 1689 Johnston St, Vancouver, BC V6H 3R9" />
+        <TextView
+            android:id="@+id/detail_text_contact_address"
+            style="@style/detail_sub_info"
+            tools:text="Public Market, 1689 Johnston St, Vancouver, BC V6H 3R9" />
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

@@ -3,10 +3,7 @@ package com.example.contactsapp.viewmodels
 import android.app.Application
 import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabaseDao
 import com.example.contactsapp.util.formatContacts
@@ -29,6 +26,7 @@ class OverviewViewModel(
         formatContacts(contacts, application.resources)
     }
 
+    /** For Initialization **/
     init {
         initializeLatestContact()
     }
@@ -38,6 +36,30 @@ class OverviewViewModel(
             latestContact.value = getLatestContactFromDatabase()
         }
     }
+
+    /** Navigation for ContactDetail Fragment **/
+    private val _navigateToContactDetail = MutableLiveData<Long>()
+
+    val navigateToContactDetail: LiveData<Long>
+        get() = _navigateToContactDetail
+
+    fun onContactClicked(id: Long) {
+        _navigateToContactDetail.value = id
+    }
+
+    fun onContactDetailNavigated() {
+        _navigateToContactDetail.value = null
+    }
+
+//    fun doneNavigating() {
+//        _navigateToContactDetail.value = null
+//    }
+//
+//    fun onClose() {
+//        //TODO("Will delete this function or change to send clicked item")
+//        _navigateToContactDetail.value = latestContact.value
+//    }
+
 
     /** Methods for Database **/
     private suspend fun getLatestContactFromDatabase(): Contact? {

@@ -6,13 +6,16 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.contactsapp.R
 import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.databinding.FragmentOverviewBinding
 import com.example.contactsapp.util.ContactAdapter
+import com.example.contactsapp.util.ContactListener
 import com.example.contactsapp.viewmodels.OverviewViewModel
 import com.example.contactsapp.viewmodels.OverviewViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -45,7 +48,12 @@ class OverviewFragment : Fragment() {
         binding.overviewViewModel = overviewViewModel
 
         /** Bind Database and RecyclerView **/
-        val adapter = ContactAdapter()
+        val adapter = ContactAdapter(ContactListener { contactId ->
+//            Toast.makeText(context, "key passed: ${contactId}", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "key passed: ${contactId}", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+            overviewViewModel.onContactClicked(contactId)
+        })
         binding.contactList.adapter = adapter
 
         overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
@@ -53,6 +61,17 @@ class OverviewFragment : Fragment() {
                 adapter.submitList(it)
             }
         })
+
+        /** Observer for Navigation **/
+        overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contact ->
+            contact?.let {
+                this.findNavController().navigate(
+                    OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(contact)
+                )
+                overviewViewModel.onContactDetailNavigated()
+            }
+        })
+
 
         /** Display Option menu on this fragment **/
         setHasOptionsMenu(true)
@@ -66,12 +85,13 @@ class OverviewFragment : Fragment() {
         /** FAB Button **/
         binding.fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+//            view.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(1))
         }
 
-        /** Contacts List : Will update for RecyclerView **/
-        binding.contactList.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_OverviewFragment_to_ContactDetailFragment)
-        }
+//        /** Contacts List : Will update for RecyclerView **/
+//        binding.contactList.setOnClickListener { view ->
+//            findNavController().navigate(R.id.action_OverviewFragment_to_ContactDetailFragment)
+//        }
     }
 
     override fun onDestroyView() {

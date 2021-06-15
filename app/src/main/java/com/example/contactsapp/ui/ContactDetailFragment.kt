@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.databinding.FragmentContactDetailBinding
+import com.example.contactsapp.viewmodels.ContactDetailViewModel
+import com.example.contactsapp.viewmodels.ContactDetailViewModelFactory
 
-/** From default **/
-//// TODO: Rename parameter arguments, choose names that match
-//// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -20,31 +21,43 @@ import com.example.contactsapp.databinding.FragmentContactDetailBinding
  */
 class ContactDetailFragment : Fragment() {
 
+    private lateinit var contactDetailViewModel: ContactDetailViewModel
+
     private var _binding: FragmentContactDetailBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    /** From default **/
-//    // TODO: Rename and change types of parameters
-//    private var param1: String? = null
-//    private var param2: String? = null
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-//    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
+
+        /** Bind Database and ViewModel **/
+        val application = requireNotNull(this.activity).application
+        val arguments = ContactDetailFragmentArgs.fromBundle(arguments)
+        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
+        val viewModelFactory = ContactDetailViewModelFactory(arguments.contactKey, dataSource, application)
+        contactDetailViewModel =
+            ViewModelProvider(this, viewModelFactory).get(ContactDetailViewModel::class.java)
+
+        binding.setLifecycleOwner(this)
+        binding.contactDetailViewModel = contactDetailViewModel
+
+        /** Observer for Navigation **/
+        contactDetailViewModel.navigateToOverview.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                this.findNavController().navigate(
+                    ContactDetailFragmentDirections.actionContactDetailFragmentToOverviewFragment()
+                )
+                contactDetailViewModel.doneNavigating()
+            }
+        })
+
+
         return binding.root
     }
 
@@ -52,25 +65,4 @@ class ContactDetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    /** From default **/
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment contact_detail.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            ContactDetail().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 }
