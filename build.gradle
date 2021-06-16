@@ -2,16 +2,18 @@
 buildscript {
     ext {
 //        kotlin_version = "1.5.10" // having an issue to build with Dao and ViewModel
-        kotlin_version = '1.3.72'
+        kotlin_version = '1.5.10'
         archLifecycleVersion = '1.1.1'
-        room_version = '2.2.5'
+        room_version = '2.3.0'
         coroutine_version = '1.3.7'
-        gradleVersion = '4.0.1'
+        gradleVersion = '4.2.1'
 //        navigationVersion = '1.0.0-alpha08'   // default
 //        navigationVersion = '1.0.0' // having an issue type mismatch when get argument from bundle: inferred type is Bundle? but Bundle was expected
-        navigationVersion = '1.0.0-alpha07'
+//        navigationVersion = '1.0.0-alpha07'
         dataBindingCompilerVersion = gradleVersion // Always need to be the same.
         version_retrofit = "2.9.0"
+//        version_moshi = "1.8.0" // required manual parsing for arrays
+//        version_moshi = "1.12.0"  // cannot access to kotlin.collections
     }
 
     repositories {
@@ -25,7 +27,7 @@ buildscript {
 
         classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0-alpha07"// 1.0.0 has type mismatch error
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -36,7 +38,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
     }
 }
 
