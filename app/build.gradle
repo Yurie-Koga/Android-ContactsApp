@@ -79,9 +79,15 @@ dependencies {
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
+    // Retrofit for a API call
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
 
     // Testing
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // Timber Logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }

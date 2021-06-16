@@ -44,7 +44,7 @@ class OverviewFragment : Fragment() {
         overviewViewModel =
             ViewModelProvider(this, viewModelFactory).get(OverviewViewModel::class.java)
 
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         binding.overviewViewModel = overviewViewModel
 
         /** Bind Database and RecyclerView **/

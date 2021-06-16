@@ -12,6 +12,11 @@
         <variable
             name="clickListener"
             type="com.example.contactsapp.util.ContactListener" />
+
+<!--        Bind for a API Response : will switch back to Database later -->
+<!--        <variable-->
+<!--            name="overviewViewModel"-->
+<!--            type="com.example.contactsapp.viewmodels.OverviewViewModel" />-->
     </data>
 
     <LinearLayout
@@ -21,6 +26,9 @@
         android:onClick="@{() -> clickListener.onClick(contact)}">
 
 
+<!--        Switch to a API Response temporary -->
+<!--        app:contactSection="@{contact}"-->
+<!--        android:text="@{overviewViewModel.response}"-->
         <TextView
             android:id="@+id/text_header_letter"
             android:layout_width="match_parent"

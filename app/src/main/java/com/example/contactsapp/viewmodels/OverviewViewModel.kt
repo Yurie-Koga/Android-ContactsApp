@@ -1,13 +1,15 @@
 package com.example.contactsapp.viewmodels
 
 import android.app.Application
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabaseDao
-import com.example.contactsapp.util.formatContacts
+import com.example.contactsapp.network.ContactApi
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import timber.log.Timber
 
 /**
  * ViewModel for OverviewFragment.
@@ -22,13 +24,18 @@ class OverviewViewModel(
     val contacts = database.getAllContacts()
 
     /** Convert Contacts data to Spanned for displaying **/
-    val contactsString = Transformations.map(contacts) { contacts ->
-        formatContacts(contacts, application.resources)
-    }
+    //import com.example.contactsapp.util.formatContacts
+//    val contactsString = Transformations.map(contacts) { contacts ->
+//        formatContacts(contacts, application.resources)
+//    }
 
     /** For Initialization **/
     init {
+        // Data from Room Database
         initializeLatestContact()
+
+        // Data from a API Response
+        getContactProperties()
     }
 
     private fun initializeLatestContact() {
@@ -36,6 +43,29 @@ class OverviewViewModel(
             latestContact.value = getLatestContactFromDatabase()
         }
     }
+
+
+    /** For a API call : not working **/
+    private var _response: String = ""
+    val response: String
+        get() = _response
+    private fun getContactProperties() {
+        ContactApi.retrofitService.getProperties().enqueue(
+            object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    _response = response.body().toString()
+                    Timber.i("_response onResponse: ${_response}")
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    _response = "Failure: " + t.message
+                    Timber.i("_response onFailure: ${_response}")
+                }
+
+            })
+    }
+
+
 
     /** Navigation for ContactDetail Fragment **/
     private val _navigateToContactDetail = MutableLiveData<Long>()
