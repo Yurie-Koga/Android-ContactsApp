@@ -29,12 +29,11 @@ private val retrofit = Retrofit.Builder()
 interface ContactApiService {
     /**
      * GET:
-     * 2 record
+     * 3 record
      * name,gender,phone,email,location
      */
-    @GET("?results=2&inc=name,gender,phone,email,location&noinfo")
-    fun getProperties(): Call<ContactProperty>
-//    fun getProperties(): NetworkContactContainer
+    @GET("?results=3&inc=name,gender,phone,email,location&noinfo")
+    suspend fun getProperties(): ContactProperty
 }
 
 object ContactApi {

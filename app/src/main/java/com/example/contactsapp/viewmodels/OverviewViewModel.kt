@@ -47,22 +47,19 @@ class OverviewViewModel(
 
 
     /** For a API call **/
-    private var _response: String = ""
-    val response: String
-        get() = _response
+    private lateinit var _response: ContactProperty
+//    val response: String
+//        get() = _response
     private fun getContactProperties() {
-        ContactApi.retrofitService.getProperties().enqueue(
-            object : Callback<ContactProperty> {
-                override fun onResponse(call: Call<ContactProperty>, response: Response<ContactProperty>) {
-                    _response = response.body().toString()
-                    Timber.i("_response onResponse: ${_response}")
-                }
-
-                override fun onFailure(call: Call<ContactProperty>, t: Throwable) {
-                    _response = "Failure: " + t.message
-                    Timber.i("_response onFailure: ${_response}")
-                }
-            })
+        viewModelScope.launch {
+            try {
+                val result = ContactApi.retrofitService.getProperties()
+                _response = result
+                Timber.i("response: ${_response}")
+            } catch (e: Exception) {
+                Timber.i("response: ${e.message}")
+            }
+        }
     }
 
 
