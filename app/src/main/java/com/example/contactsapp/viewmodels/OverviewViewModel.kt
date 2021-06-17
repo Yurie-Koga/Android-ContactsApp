@@ -34,19 +34,7 @@ class OverviewViewModel(
 
     /** For Initialization **/
     init {
-        refreshDataFromRepository()
-    }
-
-    /** For a API call **/
-    private fun refreshDataFromRepository() {
-        viewModelScope.launch {
-            try {
-                contactsRepository.refreshContacts()
-                Timber.i("Success : data has been fetched from Network and stored to Database")
-            } catch (e: Exception) {
-                Timber.i("Failure : ${e.message}")
-            }
-        }
+        // Default data: set within ContactsRepository to ContactProperty as LiveData fro this fragment
     }
 
 
@@ -93,17 +81,18 @@ class OverviewViewModel(
         }
     }
 
-    /** Methods for Option menus **/
-    fun refreshContacts() {
-        //TODO("Restore data and update View")
 
+    /** Methods for Option menus **/
+    fun refreshDataFromRepository() {
         viewModelScope.launch {
-            // Clear Database
-            clear()
-            /** Temporal : Insert 5 entries **/
-            repeat(5) {
-                val newContact = Contact()
-                insert(newContact)
+            try {
+                // clear Database
+                clear()
+                // refresh data
+                contactsRepository.refreshContacts()
+                Timber.i("Success : data has been fetched from Network and stored to Database")
+            } catch (e: Exception) {
+                Timber.i("Failure : ${e.message}")
             }
         }
     }

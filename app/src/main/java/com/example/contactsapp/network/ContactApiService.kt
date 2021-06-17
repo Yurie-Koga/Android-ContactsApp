@@ -11,7 +11,7 @@ import retrofit2.http.GET
 /**
  * Possible Query?
  * https://randomuser.me/api/?results=1&inc=name,gender,phone,email,location&noinfo
- * https://randomuser.me/api/?results=1&inc=name&noinfo
+ * https://randomuser.me/api/?results=3&inc=name,gender,phone,email,location&nat=us&noinfo
  */
 
 private const val BASE_URL = "https://randomuser.me/api/"
@@ -32,7 +32,7 @@ interface ContactApiService {
      * 3 record
      * name,gender,phone,email,location
      */
-    @GET("?results=3&inc=name,gender,phone,email,location&noinfo")
+    @GET("?results=3&inc=name,gender,phone,email,location&nat=us&noinfo")
     suspend fun getContactList(): NetworkContactContainer
 }
 

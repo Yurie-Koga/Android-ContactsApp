@@ -127,7 +127,7 @@ class OverviewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Toast.makeText(context, "Option clicked", Toast.LENGTH_SHORT).show()
         when (item.itemId) {
-            R.id.action_refresh -> overviewViewModel.refreshContacts()
+            R.id.action_refresh -> overviewViewModel.refreshDataFromRepository()
             R.id.action_clear -> overviewViewModel.clearContacts()
             else -> return true
         }

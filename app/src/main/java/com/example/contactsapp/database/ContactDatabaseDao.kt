@@ -23,8 +23,11 @@ interface ContactDatabaseDao {
     @Query("SELECT * FROM contact_table ORDER BY contactId DESC LIMIT 1")
     suspend fun getLatestContact(): Contact?
 
-    @Query("SELECT * FROM contact_table ORDER BY contactId")
-    fun getAllContacts(): LiveData<List<Contact>>
+//    @Query("SELECT * FROM contact_table ORDER BY contactId")
+//    fun getAllContactsOrderById(): LiveData<List<Contact>>
+
+    @Query("SELECT * FROM contact_table ORDER BY name_first, name_last")
+    fun getAllContactsOrderByName(): LiveData<List<Contact>>
 
     @Query("SELECT * FROM contact_table WHERE contactId = :key")
     fun getContactWithId(key: Long): LiveData<Contact>
