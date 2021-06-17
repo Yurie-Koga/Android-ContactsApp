@@ -3,10 +3,10 @@ package com.example.contactsapp.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.contactsapp.database.Contact
+import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.database.ContactDatabaseDao
 import com.example.contactsapp.domain.ContactProperty
-import com.example.contactsapp.network.ContactApi
-import com.example.contactsapp.network.asDomainModel
+import com.example.contactsapp.repository.ContactsRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -26,26 +26,25 @@ class OverviewViewModel(
 //    }
 
 
-    /** domain Models for [list_item_contact.xml] **/
-    private var _contactList = MutableLiveData<List<ContactProperty>>()
-    val contactList: LiveData<List<ContactProperty>>
-        get() = _contactList
+
+    /** Repository to fetch data from Network and store to Database **/
+    private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
+    val contactList = contactsRepository.contacts
 
 
     /** For Initialization **/
     init {
-        refreshDataFromNetwork()
+        refreshDataFromRepository()
     }
 
     /** For a API call **/
-    private fun refreshDataFromNetwork() {
+    private fun refreshDataFromRepository() {
         viewModelScope.launch {
             try {
-                val contactList = ContactApi.retrofitService.getContactList()
-                _contactList.postValue(contactList.asDomainModel())
-                Timber.i("Success response: ${contactList}")
+                contactsRepository.refreshContacts()
+                Timber.i("Success : data has been fetched from Network and stored to Database")
             } catch (e: Exception) {
-                Timber.i("Failure response: ${e.message}")
+                Timber.i("Failure : ${e.message}")
             }
         }
     }

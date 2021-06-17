@@ -1,15 +1,15 @@
 package com.example.contactsapp.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface ContactDatabaseDao {
     @Insert
     suspend fun insert(contact: Contact)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(contacts: List<Contact>)
 
     @Update
     suspend fun update(contact: Contact)

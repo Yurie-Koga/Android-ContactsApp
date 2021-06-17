@@ -1,5 +1,6 @@
 package com.example.contactsapp.network
 
+import com.example.contactsapp.database.Contact
 import com.example.contactsapp.domain.ContactProperty
 import com.example.contactsapp.domain.Name
 //import com.example.contactsapp.domain.Result
@@ -36,6 +37,7 @@ data class NetworkName(
     val last: String
 )
 
+/** Convert Network result to Kotlin Object **/
 fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
     return results.map {
         ContactProperty(
@@ -47,6 +49,17 @@ fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
         )
     }
 }
+
+/** Convert Network result to Database Object **/
+fun NetworkContactContainer.asDatabaseModel(): List<Contact> {
+    return results.map {
+        Contact(
+            nameFirst = it.name.first,
+            nameLast = it.name.last
+        )
+    }
+}
+
 /** Multiple records, only name ---------------------------------------------------- end -----**/
 
 //data class NetworkContact(

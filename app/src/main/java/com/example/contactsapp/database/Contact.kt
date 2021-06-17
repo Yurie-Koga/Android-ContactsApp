@@ -3,6 +3,8 @@ package com.example.contactsapp.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.contactsapp.domain.ContactProperty
+import com.example.contactsapp.domain.Name
 
 @Entity(tableName = "contact_table")
 data class Contact(
@@ -18,3 +20,17 @@ data class Contact(
     @ColumnInfo(name = "phone_string")
     var phone: String = "123-456-7890"
 )
+
+/** Convert Database object to Kotlin object **/
+fun List<Contact>.asDomainModel(): List<ContactProperty> {
+    return map {
+        ContactProperty(
+            id = it.contactId,
+            name = Name(
+                title = "",
+                first = it.nameFirst,
+                last = it.nameLast
+            )
+        )
+    }
+}
