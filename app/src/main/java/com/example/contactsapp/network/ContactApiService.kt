@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * Possible Query?
@@ -27,13 +28,8 @@ private val retrofit = Retrofit.Builder()
 
 
 interface ContactApiService {
-    /**
-     * GET:
-     * 3 record
-     * name,gender,phone,email,location
-     */
-    @GET("?results=3&inc=name,gender,phone,email,location&nat=us&noinfo")
-    suspend fun getContactList(): NetworkContactContainer
+    @GET("?inc=name,gender,phone,email,location&nat=us&noinfo")
+    suspend fun getContactList(@Query("results") results: Int): NetworkContactContainer
 }
 
 object ContactApi {

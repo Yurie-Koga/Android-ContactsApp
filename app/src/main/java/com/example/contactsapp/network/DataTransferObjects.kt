@@ -2,7 +2,9 @@ package com.example.contactsapp.network
 
 import com.example.contactsapp.database.Contact
 import com.example.contactsapp.domain.ContactProperty
+import com.example.contactsapp.domain.Location
 import com.example.contactsapp.domain.Name
+import com.example.contactsapp.domain.Street
 //import com.example.contactsapp.domain.Result
 import com.squareup.moshi.JsonClass
 
@@ -14,20 +16,20 @@ import com.squareup.moshi.JsonClass
  * @see domain package for
  */
 
-/** Multiple records, only name ---------------------------------------------------- start -----**/
+/** Top layer of JSON Response : "{ "results": [...] }" **/
 @JsonClass(generateAdapter = true)
 data class NetworkContactContainer(
     val results: List<NetworkResult>
 )
 
-//@JsonClass(generateAdapter = true)
-//data class NetworkContact(
-//    val results: List<NetworkResult>
-//)
-
+/** Equivalent to the data inside 'results: []' in the JSON Response **/
 @JsonClass(generateAdapter = true)
 data class NetworkResult(
-    val name: NetworkName
+    val gender: String,
+    val name: NetworkName,
+    val location: NetworkLocation,
+    val email: String,
+    val phone: String
 )
 
 @JsonClass(generateAdapter = true)
@@ -37,15 +39,40 @@ data class NetworkName(
     val last: String
 )
 
+@JsonClass(generateAdapter = true)
+data class NetworkLocation(
+    val street: NetworkStreet,
+    val city: String,
+    val state: String,
+    val country: String,
+    val postcode: Int
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkStreet(
+    val number: Int,
+    val name: String
+)
+
+
 /** Convert Network result to Kotlin Object **/
 fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
     return results.map {
         ContactProperty(
+            gender = it.gender,
             name = Name(
-                it.name.title,
                 it.name.first,
                 it.name.last
-            )
+            ),
+            location = Location(
+                Street(it.location.street.number, it.location.street.name),
+                it.location.city,
+                it.location.state,
+                it.location.country,
+                it.location.postcode
+            ),
+            email = it.email,
+            phone = it.phone
         )
     }
 }
@@ -54,61 +81,17 @@ fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
 fun NetworkContactContainer.asDatabaseModel(): List<Contact> {
     return results.map {
         Contact(
+            gender = it.gender,
             nameFirst = it.name.first,
-            nameLast = it.name.last
+            nameLast = it.name.last,
+            streetNumber = it.location.street.number,
+            streetName = it.location.street.name,
+            city = it.location.city,
+            state = it.location.state,
+            country = it.location.country,
+            postcode = it.location.postcode,
+            email = it.email,
+            phone = it.phone
         )
     }
 }
-
-/** Multiple records, only name ---------------------------------------------------- end -----**/
-
-//data class NetworkContact(
-//    val gender: String,
-//    val name_title: String,
-//    val name_first: String,
-//    val name_last: String,
-//    val location_street_number: String,
-//    val location_street_name: String,
-//    val location_city: String,
-//    val location_state: String,
-//    val location_country: String,
-//    val location_postcode: String,
-//    val location_coordinates_latitude: String,
-//    val location_coordinates_longitude: String,
-//    val location_timezone_offset: String,
-//    val location_timezone_description: String,
-//    val email: String,
-//    val phone: String
-//)
-
-/** Convert Network results to Kotlin objects **/
-//fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
-//    return contacts.map {
-//        ContactProperty(
-//            results = it.results
-//        )
-//    }
-//}
-
-//fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
-//    return contacts.map {
-//        ContactProperty(
-//            gender = it.gender,
-//            name_title = it.name_title,
-//            name_first = it.name_first,
-//            name_last = it.name_last,
-//            location_street_number = it.location_street_number,
-//            location_street_name = it.location_street_name,
-//            location_city = it.location_city,
-//            location_state = it.location_state,
-//            location_country = it.location_country,
-//            location_postcode = it.location_postcode,
-//            location_coordinates_latitude = it.location_coordinates_latitude,
-//            location_coordinates_longitude = it.location_coordinates_longitude,
-//            location_timezone_offset = it.location_timezone_offset,
-//            location_timezone_description = it.location_timezone_description,
-//            email = it.email,
-//            phone = it.phone
-//        )
-//    }
-//}

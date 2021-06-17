@@ -27,8 +27,8 @@ fun TextView.setFullName(item: ContactProperty?) {
 @BindingAdapter("phoneNumber")
 fun TextView.setPhoneNumberFormatted(item: ContactProperty?) {
     item?.let {
-        // Format to '123-456-7890'
-//        text = item.phone.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1)-$2-$3");
+        // Format to '(123)-456-7890'
+        text = item.phone.replaceFirst(Regex("\\(?(\\d{3})\\)?[\\s-]?(\\d{3})[\\s-]?(\\d+)"), "($1)-$2-$3");
     }
 }
 

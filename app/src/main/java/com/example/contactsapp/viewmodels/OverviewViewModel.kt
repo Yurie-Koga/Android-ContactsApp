@@ -76,7 +76,7 @@ class OverviewViewModel(
     /** Methods for Button press **/
     fun onAddNewContact() {
         viewModelScope.launch {
-            val newContact = Contact()
+            val newContact = Contact(nameFirst = "FirstName", nameLast = "LastName", phone = "123 456-7890")
             insert(newContact)
         }
     }
@@ -89,7 +89,7 @@ class OverviewViewModel(
                 // clear Database
                 clear()
                 // refresh data
-                contactsRepository.refreshContacts()
+                contactsRepository.refreshContacts(3)
                 Timber.i("Success : data has been fetched from Network and stored to Database")
             } catch (e: Exception) {
                 Timber.i("Failure : ${e.message}")

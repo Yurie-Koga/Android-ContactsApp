@@ -23,11 +23,11 @@ class ContactsRepository(private val database: ContactDatabase) {
         }
 
 
-    suspend fun refreshContacts() {
+    suspend fun refreshContacts(lengthOfResults: Int) {
         withContext(Dispatchers.IO) {
             Timber.i("refreshContacts() is called.")
             // fetch data from network
-            val contactList = ContactApi.retrofitService.getContactList()
+            val contactList = ContactApi.retrofitService.getContactList(lengthOfResults)
             // map the network data to database
             database.contactDatabaseDao.insertAll(contactList.asDatabaseModel())
             Timber.i("Successfully data is fetched from network and stored to database.")
