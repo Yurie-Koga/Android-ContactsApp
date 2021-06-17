@@ -1,7 +1,8 @@
 package com.example.contactsapp.network
 
 import com.example.contactsapp.domain.ContactProperty
-import com.example.contactsapp.domain.Result
+import com.example.contactsapp.domain.Name
+//import com.example.contactsapp.domain.Result
 import com.squareup.moshi.JsonClass
 
 /**
@@ -14,30 +15,37 @@ import com.squareup.moshi.JsonClass
 
 /** Multiple records, only name ---------------------------------------------------- start -----**/
 @JsonClass(generateAdapter = true)
-data class NetworkContactContainer(val contacts: NetworkContact)
-
-@JsonClass(generateAdapter = true)
-data class NetworkContact(
-    val results: List<Result>
+data class NetworkContactContainer(
+    val results: List<NetworkResult>
 )
 
-//data class NetworkResult(
-//    val name: NetworkName
-//)
-//
-//data class NetworkName(
-//    val title: String,
-//    val first: String,
-//    val last: String
+//@JsonClass(generateAdapter = true)
+//data class NetworkContact(
+//    val results: List<NetworkResult>
 //)
 
-fun NetworkContactContainer.asDomainModel(): ContactProperty {
-    return ContactProperty(results = contacts.results)
-//    return contacts.results.map {
-//        Result(
-//            name = it.name
-//        )
-//    }
+@JsonClass(generateAdapter = true)
+data class NetworkResult(
+    val name: NetworkName
+)
+
+@JsonClass(generateAdapter = true)
+data class NetworkName(
+    val title: String,
+    val first: String,
+    val last: String
+)
+
+fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
+    return results.map {
+        ContactProperty(
+            name = Name(
+                it.name.title,
+                it.name.first,
+                it.name.last
+            )
+        )
+    }
 }
 /** Multiple records, only name ---------------------------------------------------- end -----**/
 

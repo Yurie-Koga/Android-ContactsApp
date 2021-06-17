@@ -47,20 +47,34 @@ class OverviewFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.overviewViewModel = overviewViewModel
 
-        /** Bind Database and RecyclerView **/
-        val adapter = ContactAdapter(ContactListener { contactId ->
-//            Toast.makeText(context, "key passed: ${contactId}", Toast.LENGTH_SHORT).show()
-            Snackbar.make(requireView(), "key passed: ${contactId}", Snackbar.LENGTH_LONG)
+        /** Bind Kotlin Object and RecyclerView **/
+        val adapter = ContactAdapter(ContactListener { contactProperty ->
+            Snackbar.make(requireView(), "key passed: ${contactProperty.name.first}", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            overviewViewModel.onContactClicked(contactId)
+            overviewViewModel.onContactClicked(contactProperty.id)
         })
         binding.contactList.adapter = adapter
 
-        overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
+        overviewViewModel.contactList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
+
+        /** Bind Database and RecyclerView **/
+//        val adapter = ContactAdapter(ContactListener { contactId ->
+////            Toast.makeText(context, "key passed: ${contactId}", Toast.LENGTH_SHORT).show()
+//            Snackbar.make(requireView(), "key passed: ${contactId}", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+//            overviewViewModel.onContactClicked(contactId)
+//        })
+//        binding.contactList.adapter = adapter
+//
+//        overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.submitList(it)
+//            }
+//        })
 
         /** Observer for Navigation **/
         overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contact ->

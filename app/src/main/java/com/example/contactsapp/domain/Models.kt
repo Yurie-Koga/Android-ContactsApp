@@ -81,13 +81,15 @@ data class ContactProperty(
 //        }
 //    ]
 //}
+// kotlin object should be list<contact>
 data class ContactProperty(
-    val results: List<Result>
-)
-
-data class Result(
+    val id: Long = 1L,
     val name: Name
 )
+
+//data class Result(
+//    val name: Name
+//)
 
 data class Name(
     val title: String,

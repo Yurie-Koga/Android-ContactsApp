@@ -6,10 +6,8 @@ import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabaseDao
 import com.example.contactsapp.domain.ContactProperty
 import com.example.contactsapp.network.ContactApi
+import com.example.contactsapp.network.asDomainModel
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
 
 /**
@@ -20,51 +18,40 @@ class OverviewViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private var latestContact = MutableLiveData<Contact?>()
-
-    val contacts = database.getAllContacts()
-
     /** Convert Contacts data to Spanned for displaying **/
     //import com.example.contactsapp.util.formatContacts
+//    val contacts = database.getAllContacts()
 //    val contactsString = Transformations.map(contacts) { contacts ->
 //        formatContacts(contacts, application.resources)
 //    }
 
+
+    /** domain Models for [list_item_contact.xml] **/
+    private var _contactList = MutableLiveData<List<ContactProperty>>()
+    val contactList: LiveData<List<ContactProperty>>
+        get() = _contactList
+
+
     /** For Initialization **/
     init {
-        // Data from Room Database
-        initializeLatestContact()
-
-        // Data from a API Response
-        getContactProperties()
+        refreshDataFromNetwork()
     }
-
-    private fun initializeLatestContact() {
-        viewModelScope.launch {
-            latestContact.value = getLatestContactFromDatabase()
-        }
-    }
-
 
     /** For a API call **/
-    private lateinit var _response: ContactProperty
-//    val response: String
-//        get() = _response
-    private fun getContactProperties() {
+    private fun refreshDataFromNetwork() {
         viewModelScope.launch {
             try {
-                val result = ContactApi.retrofitService.getProperties()
-                _response = result
-                Timber.i("response: ${_response}")
+                val contactList = ContactApi.retrofitService.getContactList()
+                _contactList.postValue(contactList.asDomainModel())
+                Timber.i("Success response: ${contactList}")
             } catch (e: Exception) {
-                Timber.i("response: ${e.message}")
+                Timber.i("Failure response: ${e.message}")
             }
         }
     }
 
 
-
-    /** Navigation for ContactDetail Fragment **/
+    /** Navigation for ContactDetail Fragment with Databasae **/
     private val _navigateToContactDetail = MutableLiveData<Long>()
 
     val navigateToContactDetail: LiveData<Long>
@@ -78,14 +65,6 @@ class OverviewViewModel(
         _navigateToContactDetail.value = null
     }
 
-//    fun doneNavigating() {
-//        _navigateToContactDetail.value = null
-//    }
-//
-//    fun onClose() {
-//        //TODO("Will delete this function or change to send clicked item")
-//        _navigateToContactDetail.value = latestContact.value
-//    }
 
 
     /** Methods for Database **/
@@ -112,7 +91,6 @@ class OverviewViewModel(
         viewModelScope.launch {
             val newContact = Contact()
             insert(newContact)
-            latestContact.value = getLatestContactFromDatabase()
         }
     }
 
@@ -128,14 +106,12 @@ class OverviewViewModel(
                 val newContact = Contact()
                 insert(newContact)
             }
-            latestContact.value = getLatestContactFromDatabase()
         }
     }
 
     fun clearContacts() {
        viewModelScope.launch {
            clear()
-           latestContact.value = null
        }
     }
 }

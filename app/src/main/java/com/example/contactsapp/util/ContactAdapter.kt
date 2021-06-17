@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.contactsapp.database.Contact
 import com.example.contactsapp.databinding.ListItemContactBinding
+import com.example.contactsapp.domain.ContactProperty
 
-/** ContactAdapter for all the Contact data **/
-class ContactAdapter(val clickListener: ContactListener) : ListAdapter<Contact, ContactAdapter.ViewHolder>(ContactDiffCallback()) {
+/**
+ * For LiveData from Kotlin Object ----------------------------------------------------------------------
+ */
+/** ContactAdapter **/
+class ContactAdapter(val clickListener: ContactListener) :
+    ListAdapter<ContactProperty, ContactAdapter.ViewHolder>(ContactDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -22,21 +27,22 @@ class ContactAdapter(val clickListener: ContactListener) : ListAdapter<Contact, 
         return ViewHolder.from(parent)
     }
 
-    class ViewHolder private constructor(val binding: ListItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Contact, priorItem: Contact?, clickListener: ContactListener) {
-            binding.contact = item
+    class ViewHolder private constructor(val binding: ListItemContactBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ContactProperty, priorItem: ContactProperty?, clickListener: ContactListener) {
+            binding.domaincontact = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
 
             /** Temporary use ID as section letter  **/
 //            val curLetter = item.nameFirst.substring(0, 1)
-            val curLetter = item.contactId.toString().substring(0, 1)
+            val curLetter = item.name.first.toString().substring(0, 1)
 
             /** Section in the Contact list **/
             binding.textHeaderLetter.visibility = View.VISIBLE
             priorItem?.let {
                 /** Temporary use ID as section letter  **/
-                if (curLetter == it.contactId.toString().substring(0, 1)) {
+                if (curLetter == it.name.first.toString().substring(0, 1)) {
 //                if (curLetter == it.nameFirst.substring(0, 1)) {
                     // if the first letter is the same as the prior contact name, hide header text view
                     binding.textHeaderLetter.visibility = View.GONE
@@ -54,20 +60,87 @@ class ContactAdapter(val clickListener: ContactListener) : ListAdapter<Contact, 
     }
 }
 
-class ContactDiffCallback: DiffUtil.ItemCallback<Contact>() {
-    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.contactId == newItem.contactId
+/** Observers for Data changes **/
+class ContactDiffCallback: DiffUtil.ItemCallback<ContactProperty>() {
+    override fun areItemsTheSame(oldItem: ContactProperty, newItem: ContactProperty): Boolean {
+        return oldItem.name == newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+    override fun areContentsTheSame(oldItem: ContactProperty, newItem: ContactProperty): Boolean {
         return oldItem == newItem
     }
 }
 
 /** Click Listener for RecyclerView **/
-class ContactListener(val clickListener: (contactId: Long) -> Unit) {
-    fun onClick(contact: Contact) = clickListener(contact.contactId)
+// will switch back to ID for DetailFragment
+class ContactListener(val clickListener: (ContactProperty) -> Unit) {
+    fun onClick(contact: ContactProperty) = clickListener(contact)
 }
+
+
+/**
+ * For LiveData from Database ----------------------------------------------------------------------
+ */
+/** ContactAdapter for all the Contact data **/
+//class ContactAdapter(val clickListener: ContactListener) : ListAdapter<Contact, ContactAdapter.ViewHolder>(ContactDiffCallback()) {
+//
+//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+//        val item = getItem(position)
+//        val priorItem = if (position > 0) getItem(position - 1) else null
+//        holder.bind(item, priorItem, clickListener)
+//    }
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+//        return ViewHolder.from(parent)
+//    }
+//
+//    class ViewHolder private constructor(val binding: ListItemContactBinding) : RecyclerView.ViewHolder(binding.root) {
+//        fun bind(item: Contact, priorItem: Contact?, clickListener: ContactListener) {
+//            binding.contact = item
+//            binding.executePendingBindings()
+//            binding.clickListener = clickListener
+//
+//            /** Temporary use ID as section letter  **/
+////            val curLetter = item.nameFirst.substring(0, 1)
+//            val curLetter = item.contactId.toString().substring(0, 1)
+//
+//            /** Section in the Contact list **/
+//            binding.textHeaderLetter.visibility = View.VISIBLE
+//            priorItem?.let {
+//                /** Temporary use ID as section letter  **/
+//                if (curLetter == it.contactId.toString().substring(0, 1)) {
+////                if (curLetter == it.nameFirst.substring(0, 1)) {
+//                    // if the first letter is the same as the prior contact name, hide header text view
+//                    binding.textHeaderLetter.visibility = View.GONE
+//                }
+//            }
+//        }
+//
+//        companion object {
+//            fun from(parent: ViewGroup): ViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val binding = ListItemContactBinding.inflate(layoutInflater, parent, false)
+//                return ViewHolder(binding)
+//            }
+//        }
+//    }
+//}
+
+/** Observers for Data changes **/
+//class ContactDiffCallback: DiffUtil.ItemCallback<Contact>() {
+//    override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+//        return oldItem.contactId == newItem.contactId
+//    }
+//
+//    override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+//        return oldItem == newItem
+//    }
+//}
+
+/** Click Listener for RecyclerView **/
+//class ContactListener(val clickListener: (contactId: Long) -> Unit) {
+//    fun onClick(contact: Contact) = clickListener(contact.contactId)
+//}
 
 
 /** ContactAdapter for Contact ID **/

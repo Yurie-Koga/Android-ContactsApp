@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="contact"
-            type="com.example.contactsapp.database.Contact" />
+<!--        Switched to Kotlin Object -->
+<!--        <variable-->
+<!--            name="contact"-->
+<!--            type="com.example.contactsapp.database.Contact" />-->
 
 <!--        Click Listener for RecyclerView-->
         <variable
             name="clickListener"
             type="com.example.contactsapp.util.ContactListener" />
 
-<!--        Bind for a API Response : will switch back to Database later -->
-<!--        <variable-->
-<!--            name="overviewViewModel"-->
-<!--            type="com.example.contactsapp.viewmodels.OverviewViewModel" />-->
+        <variable
+            name="domaincontact"
+            type="com.example.contactsapp.domain.ContactProperty" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:onClick="@{() -> clickListener.onClick(contact)}">
+        android:onClick="@{() -> clickListener.onClick(domaincontact)}">
 
 
 <!--        Switch to a API Response temporary -->
@@ -40,7 +40,7 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@color/teal_200"
-            app:contactSection="@{contact}"
+            app:contactSection="@{domaincontact}"
             tools:text="A" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:paddingEnd="16dp"
             android:textColor="@color/black"
             android:textSize="26sp"
-            app:fullName="@{contact}"
+            app:fullName="@{domaincontact}"
             tools:text="Contact Name" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textSize="24sp"
-            app:phoneNumber="@{contact}"
+            app:phoneNumber="@{domaincontact}"
             tools:text="Phone" />
 
     </LinearLayout>

@@ -33,7 +33,7 @@ interface ContactApiService {
      * name,gender,phone,email,location
      */
     @GET("?results=3&inc=name,gender,phone,email,location&noinfo")
-    suspend fun getProperties(): ContactProperty
+    suspend fun getContactList(): NetworkContactContainer
 }
 
 object ContactApi {
