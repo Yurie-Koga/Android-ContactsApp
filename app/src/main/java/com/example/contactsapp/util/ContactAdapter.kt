@@ -77,7 +77,7 @@ class ContactListener(val clickListener: (ContactProperty) -> Unit) {
     fun onClick(contact: ContactProperty) = clickListener(contact)
 }
 
-
+// for push
 /**
  * For LiveData from Database ----------------------------------------------------------------------
  */
