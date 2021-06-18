@@ -86,12 +86,18 @@ class OverviewFragment : Fragment() {
             }
         })
 
+        /** FAB Button **/
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+            overviewViewModel.onAddContactClicked()
+        }
+
         /** Observer for Navigation to AddContact Fragment **/
         overviewViewModel.navigateToAddContact.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                this.findNavController().navigate(
-                    OverviewFragmentDirections.actionOverviewFragmentToAddContactFragment()
-                )
+//                this.findNavController().navigate(
+//                    OverviewFragmentDirections.actionOverviewFragmentToAddContactFragment()
+//                )
                 overviewViewModel.onAddContactNavigated()
             }
         })
@@ -106,11 +112,11 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** FAB Button **/
-        binding.fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
-//            view.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(1))
-        }
+//        /** FAB Button **/
+//        binding.fab.setOnClickListener { view ->
+//            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+////            view.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(1))
+//        }
 
 //        /** Contacts List : Will update for RecyclerView **/
 //        binding.contactList.setOnClickListener { view ->

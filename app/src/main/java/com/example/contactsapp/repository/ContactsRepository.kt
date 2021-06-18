@@ -34,12 +34,12 @@ class ContactsRepository(private val database: ContactDatabase) {
         }
     }
 
-    suspend fun refreshContactProperty() {
-        withContext(Dispatchers.IO) {
-            contacts =
-                Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
-                    it.asDomainModel()
-                }
-        }
-    }
+//    suspend fun refreshContactProperty() {
+//        withContext(Dispatchers.IO) {
+//            contacts =
+//                Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
+//                    it.asDomainModel()
+//                }
+//        }
+//    }
 }

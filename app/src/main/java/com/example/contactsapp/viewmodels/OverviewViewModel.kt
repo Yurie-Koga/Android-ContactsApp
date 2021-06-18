@@ -7,8 +7,10 @@ import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.database.ContactDatabaseDao
 import com.example.contactsapp.domain.ContactProperty
 import com.example.contactsapp.repository.ContactsRepository
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 /**
  * ViewModel for OverviewFragment.
@@ -64,10 +66,10 @@ class OverviewViewModel(
 
     fun onAddContactNavigated() {
         _navigateToAddContact.value = null
-        // refresh Kotlin object
-        viewModelScope.launch {
-            contactsRepository.refreshContactProperty()
-        }
+        // refresh Kotlin object: will be updated automatically
+//        viewModelScope.launch {
+//            contactsRepository.refreshContactProperty()
+//        }
     }
 
 
@@ -106,7 +108,7 @@ class OverviewViewModel(
                 // clear Database
                 clear()
                 // refresh data
-                contactsRepository.refreshContacts(3)
+                contactsRepository.refreshContacts(100)
                 Timber.i("Success : data has been fetched from Network and stored to Database")
             } catch (e: Exception) {
                 Timber.i("Failure : ${e.message}")

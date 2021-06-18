@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabaseDao
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import java.util.*
 
 class AddContactViewModel(
     val database: ContactDatabaseDao,
     application: Application
-): AndroidViewModel(application) {
+) : AndroidViewModel(application) {
 
     /** For Navigation **/
     private val _navigateToOverview = MutableLiveData<Boolean?>()
@@ -38,14 +38,17 @@ class AddContactViewModel(
 
     /** Save Button **/
     fun onSaveClick(fullName: String, phone: String) {
-        var items = fullName.split(Regex("\\s+")).toMutableList()
-        if (items.isNotEmpty()) {
-            // convert fullname to each element
-//            items.map { word -> word.replaceFirstChar { it.uppercase() } }
-            items.map { word -> word.uppercase() }
-            val firstName = items.removeAt(0)
-            val lastName = items.joinToString(" ")
-            val newContact = Contact(nameFirst = firstName, nameLast = lastName, phone = phone)
+        val names = fullName.trim().split(Regex("\\s+")).toMutableList()
+        if (names.isNotEmpty()) {
+            // capitalize
+            val capitalizedNames = names.map { word ->
+                word.substring(0, 1).uppercase(Locale.getDefault())+
+                        word.substring(1).lowercase(Locale.getDefault())
+            }.toMutableList()
+
+            val firstName = capitalizedNames.removeAt(0)
+            val lastName = capitalizedNames.joinToString(" ")
+            val newContact = Contact(nameFirst = firstName, nameLast = lastName, phone = phone.trim())
 
             // insert to database
             viewModelScope.launch {

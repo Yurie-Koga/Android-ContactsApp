@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.contactsapp.database.Contact
 import com.example.contactsapp.databinding.ListItemContactBinding
 import com.example.contactsapp.domain.ContactProperty
+import java.lang.Exception
 
 /**
  * For LiveData from Kotlin Object ----------------------------------------------------------------------
@@ -19,8 +19,12 @@ class ContactAdapter(val clickListener: ContactListener) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        val priorItem = if (position > 0) getItem(position - 1) else null
-        holder.bind(item, priorItem, clickListener)
+        val priorItem: ContactProperty? = try { getItem(position - 1) } catch (e: Exception) { null }
+        val postItem: ContactProperty? = if (position > 0) {
+            try { getItem(position + 1) } catch (e: Exception) { null }
+        } else { null }
+
+        holder.bind(item, priorItem, postItem, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,7 +33,12 @@ class ContactAdapter(val clickListener: ContactListener) :
 
     class ViewHolder private constructor(val binding: ListItemContactBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ContactProperty, priorItem: ContactProperty?, clickListener: ContactListener) {
+        fun bind(
+            item: ContactProperty,
+            priorItem: ContactProperty?,
+            postItem: ContactProperty?,
+            clickListener: ContactListener
+        ) {
             binding.domaincontact = item
             binding.executePendingBindings()
             binding.clickListener = clickListener
@@ -44,6 +53,14 @@ class ContactAdapter(val clickListener: ContactListener) :
                     binding.textHeaderLetter.visibility = View.GONE
                 }
             }
+//            postItem?.let {
+//                if (curLetter == it.name.first.substring(0, 1)) {
+//                    // update bind to the post item
+//                    binding.domaincontact = postItem
+//                    binding.executePendingBindings()
+//                    binding.textHeaderLetter.visibility = View.GONE
+//                }
+//            }
         }
 
         companion object {
@@ -59,7 +76,9 @@ class ContactAdapter(val clickListener: ContactListener) :
 /** Observers for Data changes **/
 class ContactDiffCallback: DiffUtil.ItemCallback<ContactProperty>() {
     override fun areItemsTheSame(oldItem: ContactProperty, newItem: ContactProperty): Boolean {
-        return oldItem.name == newItem.name
+        // issue: when a new entry is added to top with the same header letter, header section of the post item isn't hidden
+//        return oldItem.id == newItem.id
+        return false
     }
 
     override fun areContentsTheSame(oldItem: ContactProperty, newItem: ContactProperty): Boolean {
