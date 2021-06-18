@@ -40,7 +40,7 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@color/teal_200"
-            app:contactSection="@{domaincontact}"
+            app:sectionLetter="@{domaincontact.name.first}"
             tools:text="A" />
 
         <TextView
@@ -51,7 +51,8 @@
             android:paddingEnd="16dp"
             android:textColor="@color/black"
             android:textSize="26sp"
-            app:fullName="@{domaincontact}"
+            app:firstName="@{domaincontact.name.first}"
+            app:lastName="@{domaincontact.name.last}"
             tools:text="Contact Name" />
 
         <TextView
@@ -62,7 +63,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:textSize="24sp"
-            app:phoneNumber="@{domaincontact}"
+            app:phoneNumber="@{domaincontact.phone}"
             tools:text="Phone" />
 
     </LinearLayout>

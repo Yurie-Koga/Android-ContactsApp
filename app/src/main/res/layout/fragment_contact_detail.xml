@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
+        android:layout_marginHorizontal="16dp"
         tools:context=".ui.ContactDetailFragment">
 
         <TextView
@@ -26,29 +27,38 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="26sp"
-            app:fullName="@{contactDetailViewModel.contact}"
+            app:firstName="@{contactDetailViewModel.contact.nameFirst}"
+            app:lastName="@{contactDetailViewModel.contact.nameLast}"
             tools:text="Contact Name" />
 
         <TextView
             android:id="@+id/detail_text_contact_gender"
             style="@style/detail_sub_info"
+            android:text="@{contactDetailViewModel.contact.gender}"
             tools:text="male" />
 
         <TextView
             android:id="@+id/detail_text_contact_phone"
             style="@style/detail_sub_info"
-            app:phoneNumber="@{contactDetailViewModel.contact}"
+            app:phoneNumber="@{contactDetailViewModel.contact.phone}"
             tools:text="123-456-7890" />
 
 
         <TextView
             android:id="@+id/detail_text_contact_email"
             style="@style/detail_sub_info"
+            android:text="@{contactDetailViewModel.contact.email}"
             tools:text="aaaa.bbb@example.xyz" />
 
         <TextView
             android:id="@+id/detail_text_contact_address"
             style="@style/detail_sub_info"
+            app:city="@{contactDetailViewModel.contact.city}"
+            app:country="@{contactDetailViewModel.contact.country}"
+            app:postcode="@{contactDetailViewModel.contact.postcode}"
+            app:state="@{contactDetailViewModel.contact.state}"
+            app:streetName="@{contactDetailViewModel.contact.streetName}"
+            app:streetNumber="@{contactDetailViewModel.contact.streetNumber}"
             tools:text="Public Market, 1689 Johnston St, Vancouver, BC V6H 3R9" />
 
     </LinearLayout>

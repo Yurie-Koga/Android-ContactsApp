@@ -76,11 +76,11 @@ class OverviewFragment : Fragment() {
 //            }
 //        })
 
-        /** Observer for Navigation **/
-        overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contact ->
-            contact?.let {
+        /** Observer for Navigation on RecyclerView item click **/
+        overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contactId ->
+            contactId?.let {
                 this.findNavController().navigate(
-                    OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(contact)
+                    OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(contactId)
                 )
                 overviewViewModel.onContactDetailNavigated()
             }
