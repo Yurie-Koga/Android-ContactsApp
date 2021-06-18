@@ -3,13 +3,14 @@ package com.example.contactsapp.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.contactsapp.database.Contact
+import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.database.ContactDatabaseDao
-import com.example.contactsapp.network.ContactApi
+import com.example.contactsapp.domain.ContactProperty
+import com.example.contactsapp.repository.ContactsRepository
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import timber.log.Timber
+import java.util.*
 
 /**
  * ViewModel for OverviewFragment.
@@ -19,55 +20,27 @@ class OverviewViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    private var latestContact = MutableLiveData<Contact?>()
-
-    val contacts = database.getAllContacts()
-
     /** Convert Contacts data to Spanned for displaying **/
     //import com.example.contactsapp.util.formatContacts
+//    val contacts = database.getAllContacts()
 //    val contactsString = Transformations.map(contacts) { contacts ->
 //        formatContacts(contacts, application.resources)
 //    }
 
+
+
+    /** Repository to fetch data from Network and store to Database **/
+    private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
+    val contactList = contactsRepository.contacts
+
+
     /** For Initialization **/
     init {
-        // Data from Room Database
-        initializeLatestContact()
-
-        // Data from a API Response
-        getContactProperties()
-    }
-
-    private fun initializeLatestContact() {
-        viewModelScope.launch {
-            latestContact.value = getLatestContactFromDatabase()
-        }
+        // Default data: set within ContactsRepository to ContactProperty as LiveData fro this fragment
     }
 
 
-    /** For a API call : not working **/
-    private var _response: String = ""
-    val response: String
-        get() = _response
-    private fun getContactProperties() {
-        ContactApi.retrofitService.getProperties().enqueue(
-            object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    _response = response.body().toString()
-                    Timber.i("_response onResponse: ${_response}")
-                }
-
-                override fun onFailure(call: Call<String>, t: Throwable) {
-                    _response = "Failure: " + t.message
-                    Timber.i("_response onFailure: ${_response}")
-                }
-
-            })
-    }
-
-
-
-    /** Navigation for ContactDetail Fragment **/
+    /** Navigation for ContactDetail Fragment with ContactId **/
     private val _navigateToContactDetail = MutableLiveData<Long>()
 
     val navigateToContactDetail: LiveData<Long>
@@ -81,14 +54,23 @@ class OverviewViewModel(
         _navigateToContactDetail.value = null
     }
 
-//    fun doneNavigating() {
-//        _navigateToContactDetail.value = null
-//    }
-//
-//    fun onClose() {
-//        //TODO("Will delete this function or change to send clicked item")
-//        _navigateToContactDetail.value = latestContact.value
-//    }
+    /** Navigation for AddContact Fragment **/
+    private val _navigateToAddContact = MutableLiveData<Boolean>()
+
+    val navigateToAddContact: LiveData<Boolean>
+        get() = _navigateToAddContact
+
+    fun onAddContactClicked() {
+        _navigateToAddContact.value = true
+    }
+
+    fun onAddContactNavigated() {
+        _navigateToAddContact.value = null
+        // refresh Kotlin object: will be updated automatically
+//        viewModelScope.launch {
+//            contactsRepository.refreshContactProperty()
+//        }
+    }
 
 
     /** Methods for Database **/
@@ -113,32 +95,30 @@ class OverviewViewModel(
     /** Methods for Button press **/
     fun onAddNewContact() {
         viewModelScope.launch {
-            val newContact = Contact()
+            val newContact = Contact(nameFirst = "FirstName", nameLast = "LastName", phone = "123 456-7890")
             insert(newContact)
-            latestContact.value = getLatestContactFromDatabase()
         }
     }
 
-    /** Methods for Option menus **/
-    fun refreshContacts() {
-        //TODO("Restore data and update View")
 
+    /** Methods for Option menus **/
+    fun refreshDataFromRepository() {
         viewModelScope.launch {
-            // Clear Database
-            clear()
-            /** Temporal : Insert 5 entries **/
-            repeat(5) {
-                val newContact = Contact()
-                insert(newContact)
+            try {
+                // clear Database
+                clear()
+                // refresh data
+                contactsRepository.refreshContacts(100)
+                Timber.i("Success : data has been fetched from Network and stored to Database")
+            } catch (e: Exception) {
+                Timber.i("Failure : ${e.message}")
             }
-            latestContact.value = getLatestContactFromDatabase()
         }
     }
 
     fun clearContacts() {
        viewModelScope.launch {
            clear()
-           latestContact.value = null
        }
     }
 }

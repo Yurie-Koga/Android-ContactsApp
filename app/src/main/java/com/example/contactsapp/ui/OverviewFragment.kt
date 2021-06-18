@@ -47,28 +47,58 @@ class OverviewFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.overviewViewModel = overviewViewModel
 
-        /** Bind Database and RecyclerView **/
-        val adapter = ContactAdapter(ContactListener { contactId ->
-//            Toast.makeText(context, "key passed: ${contactId}", Toast.LENGTH_SHORT).show()
-            Snackbar.make(requireView(), "key passed: ${contactId}", Snackbar.LENGTH_LONG)
+        /** Bind Kotlin Object and RecyclerView **/
+        val adapter = ContactAdapter(ContactListener { contactProperty ->
+            Snackbar.make(requireView(), "key passed: ${contactProperty.name.first}", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            overviewViewModel.onContactClicked(contactId)
+            overviewViewModel.onContactClicked(contactProperty.id)
         })
         binding.contactList.adapter = adapter
 
-        overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
+        overviewViewModel.contactList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
 
-        /** Observer for Navigation **/
-        overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contact ->
-            contact?.let {
+        /** Bind Database and RecyclerView **/
+//        val adapter = ContactAdapter(ContactListener { contactId ->
+////            Toast.makeText(context, "key passed: ${contactId}", Toast.LENGTH_SHORT).show()
+//            Snackbar.make(requireView(), "key passed: ${contactId}", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+//            overviewViewModel.onContactClicked(contactId)
+//        })
+//        binding.contactList.adapter = adapter
+//
+//        overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.submitList(it)
+//            }
+//        })
+
+        /** Observer for Navigation to ContactDetail Fragment on RecyclerView item click **/
+        overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contactId ->
+            contactId?.let {
                 this.findNavController().navigate(
-                    OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(contact)
+                    OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(contactId)
                 )
                 overviewViewModel.onContactDetailNavigated()
+            }
+        })
+
+        /** FAB Button **/
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+            overviewViewModel.onAddContactClicked()
+        }
+
+        /** Observer for Navigation to AddContact Fragment **/
+        overviewViewModel.navigateToAddContact.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+//                this.findNavController().navigate(
+//                    OverviewFragmentDirections.actionOverviewFragmentToAddContactFragment()
+//                )
+                overviewViewModel.onAddContactNavigated()
             }
         })
 
@@ -82,11 +112,11 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /** FAB Button **/
-        binding.fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
-//            view.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(1))
-        }
+//        /** FAB Button **/
+//        binding.fab.setOnClickListener { view ->
+//            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+////            view.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(1))
+//        }
 
 //        /** Contacts List : Will update for RecyclerView **/
 //        binding.contactList.setOnClickListener { view ->
@@ -113,7 +143,7 @@ class OverviewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Toast.makeText(context, "Option clicked", Toast.LENGTH_SHORT).show()
         when (item.itemId) {
-            R.id.action_refresh -> overviewViewModel.refreshContacts()
+            R.id.action_refresh -> overviewViewModel.refreshDataFromRepository()
             R.id.action_clear -> overviewViewModel.clearContacts()
             else -> return true
         }
