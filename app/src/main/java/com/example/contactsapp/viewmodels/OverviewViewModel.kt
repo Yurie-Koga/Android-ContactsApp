@@ -102,13 +102,13 @@ class OverviewViewModel(
 
 
     /** Methods for Option menus **/
-    fun refreshDataFromRepository() {
+    fun refreshDataFromRepository(lengthOfResults: Int) {
         viewModelScope.launch {
             try {
                 // clear Database
                 clear()
                 // refresh data
-                contactsRepository.refreshContacts(100)
+                contactsRepository.refreshContacts(lengthOfResults)
                 Timber.i("Success : data has been fetched from Network and stored to Database")
             } catch (e: Exception) {
                 Timber.i("Failure : ${e.message}")
