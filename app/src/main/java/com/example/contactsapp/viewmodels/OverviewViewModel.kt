@@ -38,7 +38,7 @@ class OverviewViewModel(
     }
 
 
-    /** Navigation for ContactDetail Fragment with Databasae **/
+    /** Navigation for ContactDetail Fragment with ContactId **/
     private val _navigateToContactDetail = MutableLiveData<Long>()
 
     val navigateToContactDetail: LiveData<Long>
@@ -52,6 +52,23 @@ class OverviewViewModel(
         _navigateToContactDetail.value = null
     }
 
+    /** Navigation for AddContact Fragment **/
+    private val _navigateToAddContact = MutableLiveData<Boolean>()
+
+    val navigateToAddContact: LiveData<Boolean>
+        get() = _navigateToAddContact
+
+    fun onAddContactClicked() {
+        _navigateToAddContact.value = true
+    }
+
+    fun onAddContactNavigated() {
+        _navigateToAddContact.value = null
+        // refresh Kotlin object
+        viewModelScope.launch {
+            contactsRepository.refreshContactProperty()
+        }
+    }
 
 
     /** Methods for Database **/

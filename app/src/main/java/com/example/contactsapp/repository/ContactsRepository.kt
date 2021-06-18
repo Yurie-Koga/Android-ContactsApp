@@ -17,7 +17,7 @@ import timber.log.Timber
 class ContactsRepository(private val database: ContactDatabase) {
 
     /** Read database and set to kotlin object as LiveData for OverviewFragment as a default data **/
-    val contacts: LiveData<List<ContactProperty>> =
+    var contacts: LiveData<List<ContactProperty>> =
         Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
             it.asDomainModel()
         }
@@ -31,6 +31,15 @@ class ContactsRepository(private val database: ContactDatabase) {
             // map the network data to database
             database.contactDatabaseDao.insertAll(contactList.asDatabaseModel())
             Timber.i("Successfully data is fetched from network and stored to database.")
+        }
+    }
+
+    suspend fun refreshContactProperty() {
+        withContext(Dispatchers.IO) {
+            contacts =
+                Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
+                    it.asDomainModel()
+                }
         }
     }
 }

@@ -34,16 +34,12 @@ class ContactAdapter(val clickListener: ContactListener) :
             binding.executePendingBindings()
             binding.clickListener = clickListener
 
-            /** Temporary use ID as section letter  **/
-//            val curLetter = item.nameFirst.substring(0, 1)
-            val curLetter = item.name.first.toString().substring(0, 1)
+            val curLetter = item.name.first.substring(0, 1)
 
             /** Section in the Contact list **/
             binding.textHeaderLetter.visibility = View.VISIBLE
             priorItem?.let {
-                /** Temporary use ID as section letter  **/
-                if (curLetter == it.name.first.toString().substring(0, 1)) {
-//                if (curLetter == it.nameFirst.substring(0, 1)) {
+                if (curLetter == it.name.first.substring(0, 1)) {
                     // if the first letter is the same as the prior contact name, hide header text view
                     binding.textHeaderLetter.visibility = View.GONE
                 }

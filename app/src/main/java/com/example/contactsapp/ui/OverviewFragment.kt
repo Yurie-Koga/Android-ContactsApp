@@ -76,13 +76,23 @@ class OverviewFragment : Fragment() {
 //            }
 //        })
 
-        /** Observer for Navigation on RecyclerView item click **/
+        /** Observer for Navigation to ContactDetail Fragment on RecyclerView item click **/
         overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contactId ->
             contactId?.let {
                 this.findNavController().navigate(
                     OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(contactId)
                 )
                 overviewViewModel.onContactDetailNavigated()
+            }
+        })
+
+        /** Observer for Navigation to AddContact Fragment **/
+        overviewViewModel.navigateToAddContact.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                this.findNavController().navigate(
+                    OverviewFragmentDirections.actionOverviewFragmentToAddContactFragment()
+                )
+                overviewViewModel.onAddContactNavigated()
             }
         })
 
