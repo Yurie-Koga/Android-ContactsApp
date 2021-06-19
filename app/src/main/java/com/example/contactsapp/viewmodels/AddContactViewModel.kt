@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.contactsapp.database.Contact
+import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.database.ContactDatabaseDao
+import com.example.contactsapp.repository.ContactsRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -14,6 +16,10 @@ class AddContactViewModel(
     val database: ContactDatabaseDao,
     application: Application
 ) : AndroidViewModel(application) {
+
+    /** Repository for data access **/
+    private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
+
 
     /** For Navigation **/
     private val _navigateToOverview = MutableLiveData<Boolean?>()
@@ -27,12 +33,6 @@ class AddContactViewModel(
 
     fun onClose() {
         _navigateToOverview.value = true
-    }
-
-
-    /** Methods for Database **/
-    private suspend fun insert(contact: Contact) {
-        database.insert(contact)
     }
 
 
@@ -52,9 +52,8 @@ class AddContactViewModel(
 
             // insert to database
             viewModelScope.launch {
-                insert(newContact)
+                contactsRepository.insert(newContact)
             }
         }
     }
-
 }
