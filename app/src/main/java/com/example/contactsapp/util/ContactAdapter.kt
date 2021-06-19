@@ -11,20 +11,15 @@ import com.example.contactsapp.domain.ContactProperty
 import java.lang.Exception
 
 /**
- * For LiveData from Kotlin Object ----------------------------------------------------------------------
+ * Adapter for RecyclerView with Kotlin Object ----------------------------------------------------------------------
  */
-/** ContactAdapter **/
 class ContactAdapter(val clickListener: ContactListener) :
     ListAdapter<ContactProperty, ContactAdapter.ViewHolder>(ContactDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val priorItem: ContactProperty? = try { getItem(position - 1) } catch (e: Exception) { null }
-        val postItem: ContactProperty? = if (position > 0) {
-            try { getItem(position + 1) } catch (e: Exception) { null }
-        } else { null }
-
-        holder.bind(item, priorItem, postItem, clickListener)
+        holder.bind(item, priorItem, clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,7 +31,6 @@ class ContactAdapter(val clickListener: ContactListener) :
         fun bind(
             item: ContactProperty,
             priorItem: ContactProperty?,
-            postItem: ContactProperty?,
             clickListener: ContactListener
         ) {
             binding.domaincontact = item
@@ -53,14 +47,6 @@ class ContactAdapter(val clickListener: ContactListener) :
                     binding.textHeaderLetter.visibility = View.GONE
                 }
             }
-//            postItem?.let {
-//                if (curLetter == it.name.first.substring(0, 1)) {
-//                    // update bind to the post item
-//                    binding.domaincontact = postItem
-//                    binding.executePendingBindings()
-//                    binding.textHeaderLetter.visibility = View.GONE
-//                }
-//            }
         }
 
         companion object {
@@ -87,7 +73,6 @@ class ContactDiffCallback: DiffUtil.ItemCallback<ContactProperty>() {
 }
 
 /** Click Listener for RecyclerView **/
-// will switch back to ID for DetailFragment
 class ContactListener(val clickListener: (ContactProperty) -> Unit) {
     fun onClick(contact: ContactProperty) = clickListener(contact)
 }

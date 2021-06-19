@@ -4,17 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabase
-import com.example.contactsapp.database.ContactDatabaseDao
-import com.example.contactsapp.domain.ContactProperty
 import com.example.contactsapp.repository.ContactsRepository
-import kotlinx.coroutines.launch
+
 
 class ContactDetailViewModel(
-    private val contactKey: Long = 0L,
-    val database: ContactDatabaseDao,
+    contactKey: Long = 0L,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -22,10 +17,6 @@ class ContactDetailViewModel(
     private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
     val contact = contactsRepository.getContactProperty(contactKey)
 
-//    fun getContact() = contact    // made 'contact' public, so no need to declare getter
-
-    init {
-    }
 
     /** For Navigation **/
     private val _navigateToOverview = MutableLiveData<Boolean?>()

@@ -7,15 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabase
-import com.example.contactsapp.database.ContactDatabaseDao
 import com.example.contactsapp.repository.ContactsRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
-class AddContactViewModel(
-    val database: ContactDatabaseDao,
-    application: Application
-) : AndroidViewModel(application) {
+class AddContactViewModel(application: Application) : AndroidViewModel(application) {
 
     /** Repository for data access **/
     private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))

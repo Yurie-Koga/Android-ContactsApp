@@ -15,28 +15,24 @@ import timber.log.Timber
 /**
  * Repository to manage database access and fetching data from network.
  */
-class ContactsRepository(private val database: ContactDatabase) {
+class ContactsRepository(database: ContactDatabase) {
 
     private val dao = database.contactDatabaseDao
-
-    /** List of the contacts from database **/
-    var contacts: LiveData<List<ContactProperty>> =
-        Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
-            it.asDomainModel()
-        }
-
-    /** A single contact data from database **/
-    fun getContactProperty(contactKey: Long): LiveData<ContactProperty> =
-        Transformations.map(database.contactDatabaseDao.getContactWithId(contactKey)) {
-            it.asDomainModel()
-        }
 
     /** Insert a single contact data to database **/
     suspend fun insert(contact: Contact) = dao.insert(contact)
 
+    /** List of the contacts from database **/
+    fun getAllContactProperty(): LiveData<List<ContactProperty>> =
+        Transformations.map(dao.getAllContactsOrderByName()) { it.asDomainModel() }
+
+    /** A single contact data from database **/
+    fun getContactProperty(contactKey: Long): LiveData<ContactProperty> =
+        Transformations.map(dao.getContactWithId(contactKey)) { it.asDomainModel() }
 
     /** Clear database **/
     suspend fun clear() = dao.clear()
+
 
     /** Fetch data from network and store to database **/
     suspend fun refreshContacts(lengthOfResults: Int) {
@@ -45,10 +41,8 @@ class ContactsRepository(private val database: ContactDatabase) {
             // fetch data from network
             val contactList = ContactApi.retrofitService.getContactList(lengthOfResults)
             // map the network data to database
-            database.contactDatabaseDao.insertAll(contactList.asDatabaseModel())
+            dao.insertAll(contactList.asDatabaseModel())
             Timber.i("Successfully data is fetched from network and stored to database.")
         }
     }
-
-
 }

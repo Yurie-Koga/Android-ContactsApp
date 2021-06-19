@@ -3,34 +3,15 @@ package com.example.contactsapp.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.contactsapp.database.ContactDatabase
-import com.example.contactsapp.database.ContactDatabaseDao
 import com.example.contactsapp.repository.ContactsRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class OverviewViewModel(
-    val database: ContactDatabaseDao,
-    application: Application
-) : AndroidViewModel(application) {
-
-    /** Convert Contacts data to Spanned for displaying **/
-    //import com.example.contactsapp.util.formatContacts
-//    val contacts = database.getAllContacts()
-//    val contactsString = Transformations.map(contacts) { contacts ->
-//        formatContacts(contacts, application.resources)
-//    }
-
-
+class OverviewViewModel(application: Application) : AndroidViewModel(application) {
 
     /** Repository for data access **/
     private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
-    val contactList = contactsRepository.contacts
-
-
-    /** For Initialization **/
-    init {
-        // Default data: set within ContactsRepository to ContactProperty as LiveData fro this fragment
-    }
+    val contactList = contactsRepository.getAllContactProperty()
 
 
     /** Navigation for ContactDetail Fragment with ContactId **/

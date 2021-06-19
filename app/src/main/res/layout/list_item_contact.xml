@@ -4,19 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        Switched to Kotlin Object -->
-<!--        <variable-->
-<!--            name="contact"-->
-<!--            type="com.example.contactsapp.database.Contact" />-->
+        <variable
+            name="domaincontact"
+            type="com.example.contactsapp.domain.ContactProperty" />
 
 <!--        Click Listener for RecyclerView-->
         <variable
             name="clickListener"
             type="com.example.contactsapp.util.ContactListener" />
-
-        <variable
-            name="domaincontact"
-            type="com.example.contactsapp.domain.ContactProperty" />
     </data>
 
     <LinearLayout
@@ -25,10 +20,6 @@
         android:orientation="vertical"
         android:onClick="@{() -> clickListener.onClick(domaincontact)}">
 
-
-<!--        Switch to a API Response temporary -->
-<!--        app:contactSection="@{contact}"-->
-<!--        android:text="@{overviewViewModel.response}"-->
         <TextView
             android:id="@+id/text_header_letter"
             android:layout_width="match_parent"

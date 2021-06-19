@@ -5,15 +5,14 @@ import com.example.contactsapp.domain.ContactProperty
 import com.example.contactsapp.domain.Location
 import com.example.contactsapp.domain.Name
 import com.example.contactsapp.domain.Street
-//import com.example.contactsapp.domain.Result
 import com.squareup.moshi.JsonClass
 
 /**
- * DataTransferObjects go in this file. These are responsible for parsing responses from the server
- * or formatting objects to send to the server. You should convert these to domain objects before
- * using them.
+ * Convert network response to JSON class.
+ * Convert that data to Kotlin Object and Database Object.
  *
- * @see domain package for
+ * @see domain for objects that are used in this app
+ * @see database for objects that are mapped to the database
  */
 
 /** Top layer of JSON Response : "{ "results": [...] }" **/
