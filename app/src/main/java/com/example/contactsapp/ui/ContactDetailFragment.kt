@@ -15,9 +15,7 @@ import com.example.contactsapp.viewmodels.ContactDetailViewModelFactory
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [ContactDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * [Fragment] for displaying the contact details.
  */
 class ContactDetailFragment : Fragment() {
 

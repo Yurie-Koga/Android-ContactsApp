@@ -12,9 +12,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-/**
- * ViewModel for OverviewFragment.
- */
 class OverviewViewModel(
     val database: ContactDatabaseDao,
     application: Application
@@ -89,15 +86,6 @@ class OverviewViewModel(
 
     private suspend fun clear() {
         database.clear()
-    }
-
-
-    /** Methods for Button press **/
-    fun onAddNewContact() {
-        viewModelScope.launch {
-            val newContact = Contact(nameFirst = "FirstName", nameLast = "LastName", phone = "123 456-7890")
-            insert(newContact)
-        }
     }
 
 

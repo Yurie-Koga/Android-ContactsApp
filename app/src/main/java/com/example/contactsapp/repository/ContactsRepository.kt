@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 /**
- * Repository for fetching devbyte videos from the network and storing them on disk
+ * Repository for fetching contacts from the network and storing them on disk
  */
 class ContactsRepository(private val database: ContactDatabase) {
 

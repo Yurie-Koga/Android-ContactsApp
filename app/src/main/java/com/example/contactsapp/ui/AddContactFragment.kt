@@ -1,6 +1,5 @@
 package com.example.contactsapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-
 import androidx.navigation.fragment.findNavController
 import com.example.contactsapp.R
 import com.example.contactsapp.database.ContactDatabase
@@ -22,7 +20,7 @@ import com.example.contactsapp.viewmodels.AddContactViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * [Fragment] for adding a new contact entry.
  */
 class AddContactFragment : Fragment() {
 
@@ -74,18 +72,11 @@ class AddContactFragment : Fragment() {
         return binding.root
     }
 
-    private fun resetUI() {
-        binding.editTextName.text = null
-        binding.editTextPhone.text = null
-        binding.editTextName.requestFocus()
-        binding.buttonSave.isEnabled = false
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         /** Set up default UI **/
         resetUI()
-
 
         /** ConstraintLayout  **/
         binding.constraintlayoutWall.setOnClickListener {
@@ -96,24 +87,27 @@ class AddContactFragment : Fragment() {
             }
         }
 
-        /** ContactName EditText **/
+        /** Methods for text changes on ContactName EditText **/
         binding.editTextName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.buttonSave.isEnabled = false
-                s?.let {
-                    if (Regex("(?i)^\\s*[a-z\\d]+\\s+[a-z\\d]+").containsMatchIn(it)) {
-                        binding.buttonSave.isEnabled = true
-                    }
-                }
+                s?.let { binding.buttonSave.isEnabled = isSaveButtonEnabled() }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
 
+        /** Methods for text changes on Phone EditText **/
+        binding.editTextPhone.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let { binding.buttonSave.isEnabled = isSaveButtonEnabled() }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         /** Cancel Button **/
         binding.buttonCancel.setOnClickListener {
@@ -124,5 +118,27 @@ class AddContactFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    /** Reset UI **/
+    private fun resetUI() {
+        binding.editTextName.text = null
+        binding.editTextPhone.text = null
+        binding.editTextName.requestFocus()
+        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+        imm?.showSoftInput(binding.editTextName, InputMethodManager.SHOW_IMPLICIT)
+        binding.buttonSave.isEnabled = false
+    }
+
+
+    /** Check if Save button can be enabled **/
+    private fun isSaveButtonEnabled() : Boolean {
+        val name = binding.editTextName.text.toString()
+        val phone = binding.editTextPhone.text.toString()
+        if (!Regex("(?i)^\\s*[a-z\\d]+\\s+[a-z\\d]+").containsMatchIn(name)) { return false }
+        if (!Regex("^\\s*\\d{10}\\s*$").matches(phone)) { return false }
+
+        return true
     }
 }

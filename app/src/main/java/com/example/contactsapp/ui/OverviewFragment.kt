@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.contactsapp.R
 import com.example.contactsapp.database.ContactDatabase
@@ -18,7 +17,9 @@ import com.example.contactsapp.viewmodels.OverviewViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * [Fragment] for the default destination in the navigation.
+ * Display the contact list and navigate to the contact detail by tapping items.
+ * By tapping fab, navigates to the add contact fragment.
  */
 class OverviewFragment : Fragment() {
 
@@ -49,12 +50,11 @@ class OverviewFragment : Fragment() {
 
         /** Bind Kotlin Object and RecyclerView **/
         val adapter = ContactAdapter(ContactListener { contactProperty ->
-            Snackbar.make(requireView(), "key passed: ${contactProperty.name.first}", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+//            Snackbar.make(requireView(), "key passed: ${contactProperty.name.first}", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
             overviewViewModel.onContactClicked(contactProperty.id)
         })
         binding.contactList.adapter = adapter
-
         overviewViewModel.contactList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
@@ -86,18 +86,10 @@ class OverviewFragment : Fragment() {
             }
         })
 
-        /** FAB Button **/
-        binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
-            overviewViewModel.onAddContactClicked()
-        }
 
         /** Observer for Navigation to AddContact Fragment **/
         overviewViewModel.navigateToAddContact.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-//                this.findNavController().navigate(
-//                    OverviewFragmentDirections.actionOverviewFragmentToAddContactFragment()
-//                )
                 overviewViewModel.onAddContactNavigated()
             }
         })
@@ -112,16 +104,11 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        /** FAB Button **/
-//        binding.fab.setOnClickListener { view ->
-//            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
-////            view.findNavController().navigate(OverviewFragmentDirections.actionOverviewFragmentToContactDetailFragment(1))
-//        }
-
-//        /** Contacts List : Will update for RecyclerView **/
-//        binding.contactList.setOnClickListener { view ->
-//            findNavController().navigate(R.id.action_OverviewFragment_to_ContactDetailFragment)
-//        }
+        /** FAB Button **/
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+            overviewViewModel.onAddContactClicked()
+        }
     }
 
     override fun onDestroyView() {
@@ -141,7 +128,7 @@ class OverviewFragment : Fragment() {
      * Update ViewModel when data action is selected
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Toast.makeText(context, "Option clicked", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Option clicked", Toast.LENGTH_SHORT).show()
         when (item.itemId) {
             R.id.action_refresh_small -> overviewViewModel.refreshDataFromRepository(5)
             R.id.action_refresh_medium -> overviewViewModel.refreshDataFromRepository(50)
