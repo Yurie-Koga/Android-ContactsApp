@@ -2,6 +2,7 @@ package com.example.contactsapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import com.example.contactsapp.database.Contact
 import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.database.asDomainModel
 import com.example.contactsapp.domain.ContactProperty
@@ -12,34 +13,36 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 /**
- * Repository for fetching contacts from the network and storing them on disk
+ * Repository to manage database access and fetching data from network.
  */
-class ContactsRepository(private val database: ContactDatabase) {
+class ContactsRepository(database: ContactDatabase) {
 
-    /** Read database and set to kotlin object as LiveData for OverviewFragment as a default data **/
-    var contacts: LiveData<List<ContactProperty>> =
-        Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
-            it.asDomainModel()
-        }
+    private val dao = database.contactDatabaseDao
+
+    /** Insert a single contact data to database **/
+    suspend fun insert(contact: Contact) = dao.insert(contact)
+
+    /** List of the contacts from database **/
+    fun getAllContactProperty(): LiveData<List<ContactProperty>> =
+        Transformations.map(dao.getAllContactsOrderByName()) { it.asDomainModel() }
+
+    /** A single contact data from database **/
+    fun getContactProperty(contactKey: Long): LiveData<ContactProperty> =
+        Transformations.map(dao.getContactWithId(contactKey)) { it.asDomainModel() }
+
+    /** Clear database **/
+    suspend fun clear() = dao.clear()
 
 
+    /** Fetch data from network and store to database **/
     suspend fun refreshContacts(lengthOfResults: Int) {
         withContext(Dispatchers.IO) {
             Timber.i("refreshContacts() is called.")
             // fetch data from network
             val contactList = ContactApi.retrofitService.getContactList(lengthOfResults)
             // map the network data to database
-            database.contactDatabaseDao.insertAll(contactList.asDatabaseModel())
+            dao.insertAll(contactList.asDatabaseModel())
             Timber.i("Successfully data is fetched from network and stored to database.")
         }
     }
-
-//    suspend fun refreshContactProperty() {
-//        withContext(Dispatchers.IO) {
-//            contacts =
-//                Transformations.map(database.contactDatabaseDao.getAllContactsOrderByName()) {
-//                    it.asDomainModel()
-//                }
-//        }
-//    }
 }

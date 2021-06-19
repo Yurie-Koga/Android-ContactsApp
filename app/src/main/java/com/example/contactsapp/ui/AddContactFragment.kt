@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.contactsapp.R
-import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.databinding.FragmentAddContactBinding
 import com.example.contactsapp.viewmodels.AddContactViewModel
 import com.example.contactsapp.viewmodels.AddContactViewModelFactory
@@ -37,13 +36,11 @@ class AddContactFragment : Fragment() {
 
         _binding = FragmentAddContactBinding.inflate(inflater, container, false)
 
-        /** Bind Database and ViewModel **/
+        /** Bind View and ViewModel **/
         val application = requireNotNull(this.activity).application
-        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
-        val viewModelFactory = AddContactViewModelFactory(dataSource, application)
+        val viewModelFactory = AddContactViewModelFactory(application)
         val addContactViewModel =
             ViewModelProvider(this, viewModelFactory).get(AddContactViewModel::class.java)
-
         binding.setLifecycleOwner(this)
         binding.addContactViewModel = addContactViewModel
 
@@ -60,12 +57,11 @@ class AddContactFragment : Fragment() {
         /** Save Button **/
         binding.buttonSave.setOnClickListener {
             it?.let {
-                val imm = ContextCompat.getSystemService(it.context, InputMethodManager::class.java)
-                imm?.hideSoftInputFromWindow(it.windowToken, 0)
+                // save data
                 addContactViewModel.onSaveClick(binding.editTextName.text.toString(), binding.editTextPhone.text.toString())
-                Snackbar.make(it, "Saved!", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
 
-                resetUI()
+                resetUI(false)
+                Snackbar.make(it, "Saved!", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
             }
         }
 
@@ -76,14 +72,13 @@ class AddContactFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /** Set up default UI **/
-        resetUI()
+        resetUI(true)
 
         /** ConstraintLayout  **/
         binding.constraintlayoutWall.setOnClickListener {
             it?.let {
                 // hide keyboard
-                val imm = ContextCompat.getSystemService(it.context, InputMethodManager::class.java)
-                imm?.hideSoftInputFromWindow(it.windowToken, 0)
+                setKeyboard(false)
             }
         }
 
@@ -122,13 +117,21 @@ class AddContactFragment : Fragment() {
 
 
     /** Reset UI **/
-    private fun resetUI() {
+    private fun resetUI(showKeyboard: Boolean = false) {
         binding.editTextName.text = null
         binding.editTextPhone.text = null
-        binding.editTextName.requestFocus()
-        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
-        imm?.showSoftInput(binding.editTextName, InputMethodManager.SHOW_IMPLICIT)
         binding.buttonSave.isEnabled = false
+        binding.editTextName.requestFocus()
+
+        setKeyboard(showKeyboard, binding.editTextName)
+    }
+    private fun setKeyboard(show: Boolean = false, setTo: View? = null) {
+        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+        if (show && setTo != null) {
+            imm?.showSoftInput(setTo, InputMethodManager.SHOW_IMPLICIT)
+        } else {
+            imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+        }
     }
 
 

@@ -1,26 +1,21 @@
 <resources>
+    <!-- App name -->
     <string name="app_name">Contacts App</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="overview_fragment_label">Overview Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="add_new_contact">Add New Contact</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Navigation -->
+    <string name="overview_fragment_label">Overview Fragment</string>
+    <string name="add_contact_fragment_label">Add Contact Fragment</string>
+    <string name="contact_detail_fragment_label">Contact Detail Fragment</string>
+
+    <!-- Option menu -->
     <string name="action_refresh_small">Refresh (small)</string>
     <string name="action_refresh_medium">Refresh (medium)</string>
     <string name="action_refresh_large">Refresh (large)</string>
     <string name="action_clear">Clear</string>
+
+    <!-- AddContact Fragment -->
     <string name="contact_name">Contact Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_contact_fragment_label">Add Contact Fragment</string>
-    <string name="contact_detail_fragment_label">Contact Detail Fragment</string>
-
 </resources>

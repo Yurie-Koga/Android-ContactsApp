@@ -3,18 +3,15 @@ package com.example.contactsapp.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.contactsapp.R
-import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.databinding.FragmentOverviewBinding
 import com.example.contactsapp.util.ContactAdapter
 import com.example.contactsapp.util.ContactListener
 import com.example.contactsapp.viewmodels.OverviewViewModel
 import com.example.contactsapp.viewmodels.OverviewViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * [Fragment] for the default destination in the navigation.
@@ -38,20 +35,16 @@ class OverviewFragment : Fragment() {
 
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
 
-        /** Bind Database and ViewModel **/
+        /** Bind View and ViewModel **/
         val application = requireNotNull(this.activity).application
-        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
-        val viewModelFactory = OverviewViewModelFactory(dataSource, application)
+        val viewModelFactory = OverviewViewModelFactory(application)
         overviewViewModel =
             ViewModelProvider(this, viewModelFactory).get(OverviewViewModel::class.java)
-
         binding.lifecycleOwner = this
         binding.overviewViewModel = overviewViewModel
 
         /** Bind Kotlin Object and RecyclerView **/
         val adapter = ContactAdapter(ContactListener { contactProperty ->
-//            Snackbar.make(requireView(), "key passed: ${contactProperty.name.first}", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
             overviewViewModel.onContactClicked(contactProperty.id)
         })
         binding.contactList.adapter = adapter
@@ -61,20 +54,6 @@ class OverviewFragment : Fragment() {
             }
         })
 
-        /** Bind Database and RecyclerView **/
-//        val adapter = ContactAdapter(ContactListener { contactId ->
-////            Toast.makeText(context, "key passed: ${contactId}", Toast.LENGTH_SHORT).show()
-//            Snackbar.make(requireView(), "key passed: ${contactId}", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//            overviewViewModel.onContactClicked(contactId)
-//        })
-//        binding.contactList.adapter = adapter
-//
-//        overviewViewModel.contacts.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                adapter.submitList(it)
-//            }
-//        })
 
         /** Observer for Navigation to ContactDetail Fragment on RecyclerView item click **/
         overviewViewModel.navigateToContactDetail.observe(viewLifecycleOwner, Observer { contactId ->
@@ -128,7 +107,6 @@ class OverviewFragment : Fragment() {
      * Update ViewModel when data action is selected
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        Toast.makeText(context, "Option clicked", Toast.LENGTH_SHORT).show()
         when (item.itemId) {
             R.id.action_refresh_small -> overviewViewModel.refreshDataFromRepository(5)
             R.id.action_refresh_medium -> overviewViewModel.refreshDataFromRepository(50)

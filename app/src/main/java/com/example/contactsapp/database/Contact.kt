@@ -50,22 +50,26 @@ data class Contact(
 /** Convert Database object to Kotlin object **/
 fun List<Contact>.asDomainModel(): List<ContactProperty> {
     return map {
-        ContactProperty(
-            id = it.contactId,
-            gender = it.gender,
+        it.asDomainModel()
+    }
+}
+
+fun Contact.asDomainModel(): ContactProperty {
+    return ContactProperty(
+            id = contactId,
+            gender = gender,
             name = Name(
-                first = it.nameFirst,
-                last = it.nameLast
+                first = nameFirst,
+                last = nameLast
             ),
             location = Location(
-                Street(it.streetNumber, it.streetName),
-                it.city,
-                it.state,
-                it.country,
-                it.postcode
+                Street(streetNumber, streetName),
+                city,
+                state,
+                country,
+                postcode
             ),
-            email = it.email,
-            phone = it.phone
+            email = email,
+            phone = phone
         )
-    }
 }

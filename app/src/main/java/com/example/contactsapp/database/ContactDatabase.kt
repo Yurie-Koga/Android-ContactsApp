@@ -12,7 +12,7 @@ abstract class ContactDatabase : RoomDatabase() {
     abstract val contactDatabaseDao: ContactDatabaseDao
 
     companion object {
-
+        /** Database instance: singleton  **/
         @Volatile
         private var INSTANCE: ContactDatabase? = null
 

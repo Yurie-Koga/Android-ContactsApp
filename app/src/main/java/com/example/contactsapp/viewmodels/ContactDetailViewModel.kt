@@ -4,22 +4,19 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.contactsapp.database.Contact
-import com.example.contactsapp.database.ContactDatabaseDao
+import com.example.contactsapp.database.ContactDatabase
+import com.example.contactsapp.repository.ContactsRepository
+
 
 class ContactDetailViewModel(
-    private val contactKey: Long = 0L,
-    val database: ContactDatabaseDao,
+    contactKey: Long = 0L,
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val contact: LiveData<Contact>
+    /** Repository for data access **/
+    private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
+    val contact = contactsRepository.getContactProperty(contactKey)
 
-    fun getContact() = contact
-
-    init {
-        contact = database.getContactWithId(contactKey)
-    }
 
     /** For Navigation **/
     private val _navigateToOverview = MutableLiveData<Boolean?>()

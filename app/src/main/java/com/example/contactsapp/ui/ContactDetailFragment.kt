@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.contactsapp.database.ContactDatabase
 import com.example.contactsapp.databinding.FragmentContactDetailBinding
 import com.example.contactsapp.viewmodels.ContactDetailViewModel
 import com.example.contactsapp.viewmodels.ContactDetailViewModelFactory
@@ -34,11 +33,10 @@ class ContactDetailFragment : Fragment() {
 
         _binding = FragmentContactDetailBinding.inflate(inflater, container, false)
 
-        /** Bind Database and ViewModel **/
+        /** Bind View and ViewModel **/
         val application = requireNotNull(this.activity).application
         val arguments = ContactDetailFragmentArgs.fromBundle(arguments)
-        val dataSource = ContactDatabase.getInstance(application).contactDatabaseDao
-        val viewModelFactory = ContactDetailViewModelFactory(arguments.contactKey, dataSource, application)
+        val viewModelFactory = ContactDetailViewModelFactory(arguments.contactKey, application)
         contactDetailViewModel =
             ViewModelProvider(this, viewModelFactory).get(ContactDetailViewModel::class.java)
 

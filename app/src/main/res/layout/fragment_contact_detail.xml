@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="contactDetailViewModel"
             type="com.example.contactsapp.viewmodels.ContactDetailViewModel" />
@@ -14,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical"
         android:layout_marginHorizontal="16dp"
+        android:orientation="vertical"
         tools:context=".ui.ContactDetailFragment">
 
         <TextView
@@ -27,8 +26,8 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="26sp"
-            app:firstName="@{contactDetailViewModel.contact.nameFirst}"
-            app:lastName="@{contactDetailViewModel.contact.nameLast}"
+            app:firstName="@{contactDetailViewModel.contact.name.first}"
+            app:lastName="@{contactDetailViewModel.contact.name.last}"
             tools:text="Contact Name" />
 
         <TextView
@@ -43,7 +42,6 @@
             app:phoneNumber="@{contactDetailViewModel.contact.phone}"
             tools:text="123-456-7890" />
 
-
         <TextView
             android:id="@+id/detail_text_contact_email"
             style="@style/detail_sub_info"
@@ -53,12 +51,12 @@
         <TextView
             android:id="@+id/detail_text_contact_address"
             style="@style/detail_sub_info"
-            app:city="@{contactDetailViewModel.contact.city}"
-            app:country="@{contactDetailViewModel.contact.country}"
-            app:postcode="@{contactDetailViewModel.contact.postcode}"
-            app:state="@{contactDetailViewModel.contact.state}"
-            app:streetName="@{contactDetailViewModel.contact.streetName}"
-            app:streetNumber="@{contactDetailViewModel.contact.streetNumber}"
+            app:city="@{contactDetailViewModel.contact.location.city}"
+            app:country="@{contactDetailViewModel.contact.location.country}"
+            app:postcode="@{contactDetailViewModel.contact.location.postcode}"
+            app:state="@{contactDetailViewModel.contact.location.state}"
+            app:streetName="@{contactDetailViewModel.contact.location.street.name}"
+            app:streetNumber="@{contactDetailViewModel.contact.location.street.number}"
             tools:text="Public Market, 1689 Johnston St, Vancouver, BC V6H 3R9" />
 
     </LinearLayout>
