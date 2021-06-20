@@ -53,9 +53,5 @@ class AddContactViewModel(application: Application) : AndroidViewModel(applicati
                 contactsRepository.insert(newContact)
             }
         }
-
-        /**
-         * Should I indicate that data save is finished here?
-         */
     }
 }
