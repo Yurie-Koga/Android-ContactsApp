@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 /**
- * Repository to manage database access and fetching data from network.
+ * Repository to manage database access and fetching data from network for ViewModels.
  */
 class ContactsRepository(database: ContactDatabase) {
 

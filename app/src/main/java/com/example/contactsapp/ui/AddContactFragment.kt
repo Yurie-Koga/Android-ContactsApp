@@ -25,8 +25,7 @@ class AddContactFragment : Fragment() {
 
     private var _binding: FragmentAddContactBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -44,7 +43,7 @@ class AddContactFragment : Fragment() {
         binding.setLifecycleOwner(this)
         binding.addContactViewModel = addContactViewModel
 
-        /** Observer for Navigation **/
+        /** Observer for Cancel Button onClick() **/
         addContactViewModel.navigateToOverview.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 this.findNavController().navigate(
@@ -103,11 +102,6 @@ class AddContactFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
-
-        /** Cancel Button **/
-        binding.buttonCancel.setOnClickListener {
-            findNavController().navigate(R.id.action_AddContactFragment_to_OverviewFragment)
-        }
     }
 
     override fun onDestroyView() {

@@ -22,8 +22,7 @@ class ContactDetailFragment : Fragment() {
 
     private var _binding: FragmentContactDetailBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,17 +41,6 @@ class ContactDetailFragment : Fragment() {
 
         binding.setLifecycleOwner(this)
         binding.contactDetailViewModel = contactDetailViewModel
-
-        /** Observer for Navigation **/
-        contactDetailViewModel.navigateToOverview.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                this.findNavController().navigate(
-                    ContactDetailFragmentDirections.actionContactDetailFragmentToOverviewFragment()
-                )
-                contactDetailViewModel.doneNavigating()
-            }
-        })
-
 
         return binding.root
     }

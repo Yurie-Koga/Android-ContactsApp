@@ -15,8 +15,8 @@ import com.example.contactsapp.viewmodels.OverviewViewModelFactory
 
 /**
  * [Fragment] for the default destination in the navigation.
- * Display the contact list and navigate to the contact detail by tapping items.
- * By tapping fab, navigates to the add contact fragment.
+ * Display the contact list and navigate to ContactDetail Fragment by tapping items.
+ * By tapping fab, navigates to AddContact Fragment.
  */
 class OverviewFragment : Fragment() {
 
@@ -24,8 +24,7 @@ class OverviewFragment : Fragment() {
 
     private var _binding: FragmentOverviewBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -69,6 +68,9 @@ class OverviewFragment : Fragment() {
         /** Observer for Navigation to AddContact Fragment **/
         overviewViewModel.navigateToAddContact.observe(viewLifecycleOwner, Observer {
             if (it == true) {
+                this.findNavController().navigate(
+                    OverviewFragmentDirections.actionOverviewFragmentToAddContactFragment()
+                )
                 overviewViewModel.onAddContactNavigated()
             }
         })
@@ -84,10 +86,10 @@ class OverviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /** FAB Button **/
-        binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
-            overviewViewModel.onAddContactClicked()
-        }
+//        binding.fab.setOnClickListener {
+//            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
+//            overviewViewModel.onAddContactClicked()
+//        }
     }
 
     override fun onDestroyView() {

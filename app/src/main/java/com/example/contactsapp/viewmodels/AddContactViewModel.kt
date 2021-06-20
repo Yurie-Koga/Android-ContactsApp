@@ -27,7 +27,9 @@ class AddContactViewModel(application: Application) : AndroidViewModel(applicati
         _navigateToOverview.value = null
     }
 
-    fun onClose() {
+
+    /** Cancel Button **/
+    fun onCancelClick() {
         _navigateToOverview.value = true
     }
 
@@ -51,5 +53,9 @@ class AddContactViewModel(application: Application) : AndroidViewModel(applicati
                 contactsRepository.insert(newContact)
             }
         }
+
+        /**
+         * Should I indicate that data save is finished here?
+         */
     }
 }

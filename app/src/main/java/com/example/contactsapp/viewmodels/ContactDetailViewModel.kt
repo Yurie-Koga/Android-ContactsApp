@@ -16,19 +16,4 @@ class ContactDetailViewModel(
     /** Repository for data access **/
     private val contactsRepository = ContactsRepository(ContactDatabase.getInstance(application))
     val contact = contactsRepository.getContactProperty(contactKey)
-
-
-    /** For Navigation **/
-    private val _navigateToOverview = MutableLiveData<Boolean?>()
-
-    val navigateToOverview: LiveData<Boolean?>
-        get() = _navigateToOverview
-
-    fun doneNavigating() {
-        _navigateToOverview.value = null
-    }
-
-    fun onClose() {
-        _navigateToOverview.value = true
-    }
 }

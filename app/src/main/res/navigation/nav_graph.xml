@@ -26,7 +26,8 @@
 
         <action
             android:id="@+id/action_AddContactFragment_to_OverviewFragment"
-            app:destination="@id/OverviewFragment" />
+            app:destination="@id/OverviewFragment"
+            app:popUpTo="@id/OverviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/ContactDetailFragment"
@@ -38,6 +39,7 @@
             app:argType="long" />
         <action
             android:id="@+id/action_ContactDetailFragment_to_OverviewFragment"
-            app:destination="@id/OverviewFragment" />
+            app:destination="@id/OverviewFragment"
+            app:popUpTo="@id/OverviewFragment" />
     </fragment>
 </navigation>

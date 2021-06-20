@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             android:layout_marginTop="50dp"
+            android:onClick="@{() -> addContactViewModel.onCancelClick()}"
             app:layout_constraintEnd_toStartOf="@id/button_save"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editText_phone" />

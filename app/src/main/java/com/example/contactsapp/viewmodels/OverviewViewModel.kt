@@ -34,13 +34,16 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     val navigateToAddContact: LiveData<Boolean>
         get() = _navigateToAddContact
 
+    fun onAddContactNavigated() {
+        _navigateToAddContact.value = null
+    }
+
+
+    /** FAB **/
     fun onAddContactClicked() {
         _navigateToAddContact.value = true
     }
 
-    fun onAddContactNavigated() {
-        _navigateToAddContact.value = null
-    }
 
 
     /** Methods for Option menus **/
