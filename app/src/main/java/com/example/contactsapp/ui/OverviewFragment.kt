@@ -2,6 +2,7 @@ package com.example.contactsapp.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -75,6 +76,10 @@ class OverviewFragment : Fragment() {
             }
         })
 
+        /** Observer for NetworkError **/
+        overviewViewModel.eventNetworkError.observe(viewLifecycleOwner, Observer { isNetworkError ->
+            if (isNetworkError) onNetworkError()
+        })
 
         /** Display Option menu on this fragment **/
         setHasOptionsMenu(true)
@@ -82,19 +87,17 @@ class OverviewFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /** FAB Button **/
-//        binding.fab.setOnClickListener {
-//            findNavController().navigate(R.id.action_OverviewFragment_to_AddContactFragment)
-//            overviewViewModel.onAddContactClicked()
-//        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    /** NetworkError Event **/
+    private fun onNetworkError() {
+        if (!overviewViewModel.isNetworkErrorShown.value!!) {
+            Toast.makeText(activity, "Network Error", Toast.LENGTH_LONG).show()
+            overviewViewModel.onNetworkErrorShown()
+        }
     }
 
     /**

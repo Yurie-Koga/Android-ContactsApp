@@ -14,6 +14,22 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     val contactList = contactsRepository.getAllContactProperty()
 
 
+    /** For NetworkError Event **/
+    private var _eventNetworkError = MutableLiveData(false)
+    val eventNetworkError: LiveData<Boolean>
+        get() = _eventNetworkError
+
+
+    /** For NetworkError Display **/
+    private var _isNetworkErrorShown = MutableLiveData(false)
+    val isNetworkErrorShown: LiveData<Boolean>
+        get() = _isNetworkErrorShown
+
+    fun onNetworkErrorShown() {
+        _isNetworkErrorShown.value = true
+    }
+
+
     /** Navigation for ContactDetail Fragment with ContactId **/
     private val _navigateToContactDetail = MutableLiveData<Long>()
 
@@ -27,6 +43,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     fun onContactDetailNavigated() {
         _navigateToContactDetail.value = null
     }
+
 
     /** Navigation for AddContact Fragment **/
     private val _navigateToAddContact = MutableLiveData<Boolean>()
@@ -45,9 +62,12 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     }
 
 
-
     /** Methods for Option menus **/
     fun refreshDataFromRepository(lengthOfResults: Int) {
+        // reset flags each time when Refresh menu selected
+        _eventNetworkError.value = false
+        _isNetworkErrorShown.value = false
+
         viewModelScope.launch {
             try {
                 // clear Database
@@ -56,6 +76,7 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
                 contactsRepository.refreshContacts(lengthOfResults)
                 Timber.i("Success : data has been fetched from Network and stored to Database")
             } catch (e: Exception) {
+                if (contactList.value.isNullOrEmpty()) { _eventNetworkError.value = true }
                 Timber.i("Failure : ${e.message}")
             }
         }
