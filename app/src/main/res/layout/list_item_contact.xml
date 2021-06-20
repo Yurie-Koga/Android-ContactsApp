@@ -27,10 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@color/teal_200"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingHorizontal="@dimen/contact_list_padding_horizontal"
             android:textColor="@color/white"
-            android:textSize="26sp"
+            android:textSize="@dimen/contact_name"
             android:textStyle="bold"
             app:sectionLetter="@{domaincontact.name.first}"
             tools:text="A" />
@@ -39,10 +38,9 @@
             android:id="@+id/text_contact_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingHorizontal="@dimen/contact_list_padding_horizontal"
             android:textColor="@color/black"
-            android:textSize="26sp"
+            android:textSize="@dimen/contact_name"
             app:firstName="@{domaincontact.name.first}"
             app:lastName="@{domaincontact.name.last}"
             tools:text="Contact Name" />
@@ -52,9 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textSize="24sp"
+            android:paddingHorizontal="@dimen/contact_list_padding_horizontal"
+            android:textSize="@dimen/contact_sub_info"
             app:phoneNumber="@{domaincontact.phone}"
             tools:text="Phone" />
 

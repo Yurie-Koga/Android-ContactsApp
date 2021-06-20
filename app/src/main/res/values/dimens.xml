@@ -1,4 +1,14 @@
 <resources>
+    <!-- FAB [OverviewFragment] -->
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Contact List [OverviewFragment] -->
+    <dimen name="contact_list_padding_horizontal">16dp</dimen>
+
+    <!-- Contact Info -->
+    <dimen name="contact_name">24sp</dimen>
+    <dimen name="contact_sub_info">20sp</dimen>
+
+    <!-- Contact Detail -->
     <dimen name="detail_margin_vertical">10dp</dimen>
 </resources>

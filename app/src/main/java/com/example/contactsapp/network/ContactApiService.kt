@@ -9,6 +9,7 @@ import retrofit2.http.Query
 
 /**
  * API Service to fetch data from network.
+ * API Documentation : https://randomuser.me/documentation
  */
 
 private const val BASE_URL = "https://randomuser.me/api/"

@@ -3,9 +3,9 @@
     <string name="app_name">Contacts App</string>
 
     <!-- Navigation -->
-    <string name="overview_fragment_label">Overview Fragment</string>
-    <string name="add_contact_fragment_label">Add Contact Fragment</string>
-    <string name="contact_detail_fragment_label">Contact Detail Fragment</string>
+    <string name="overview_fragment_label">Contacts</string>
+    <string name="add_contact_fragment_label">Add Contact</string>
+    <string name="contact_detail_fragment_label">Details</string>
 
     <!-- Option menu -->
     <string name="action_refresh_small">Refresh (small)</string>
@@ -14,7 +14,7 @@
     <string name="action_clear">Clear</string>
 
     <!-- AddContact Fragment -->
-    <string name="contact_name">Contact Name</string>
+    <string name="contact_name">First Name and Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
