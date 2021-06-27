@@ -3,10 +3,7 @@ package com.example.contactsapp.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.contactsapp.domain.ContactProperty
-import com.example.contactsapp.domain.Location
-import com.example.contactsapp.domain.Name
-import com.example.contactsapp.domain.Street
+import com.example.contactsapp.domain.*
 
 @Entity(tableName = "contact_table")
 data class Contact(
@@ -44,7 +41,10 @@ data class Contact(
     var email: String = "",
 
     @ColumnInfo(name = "phone_string")
-    var phone: String = ""
+    var phone: String = "",
+
+    @ColumnInfo(name = "picture_large")
+    var pictureLarge: String = ""
 )
 
 /** Convert Database object to Kotlin object **/
@@ -70,6 +70,7 @@ fun Contact.asDomainModel(): ContactProperty {
                 postcode
             ),
             email = email,
-            phone = phone
+            phone = phone,
+            picture = Picture(pictureLarge)
         )
 }

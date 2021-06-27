@@ -8,6 +8,7 @@ buildscript {
         gradleVersion = '4.2.1'
         dataBindingCompilerVersion = gradleVersion // Always need to be the same.
         version_retrofit = "2.9.0"
+        version_glide = '4.8.0'
     }
 
     repositories {

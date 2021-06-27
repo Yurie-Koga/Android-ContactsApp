@@ -15,7 +15,8 @@ data class ContactProperty(
     val name: Name,
     val location: Location,
     val email: String,
-    val phone: String
+    val phone: String,
+    val picture: Picture
 )
 
 data class Name(
@@ -34,4 +35,8 @@ data class Location(
 data class Street(
     val number: Int,
     val name: String
+)
+
+data class Picture(
+    val large: String
 )

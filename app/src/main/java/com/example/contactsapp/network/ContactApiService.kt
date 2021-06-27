@@ -25,7 +25,8 @@ private val retrofit = Retrofit.Builder()
 
 
 interface ContactApiService {
-    @GET("?inc=name,gender,phone,email,location&nat=us&noinfo")
+//    @GET("?inc=name,gender,phone,email,location&nat=us&noinfo")
+    @GET("?inc=name,gender,phone,email,location,picture&nat=us&noinfo")
     suspend fun getContactList(@Query("results") results: Int): NetworkContactContainer
 }
 
