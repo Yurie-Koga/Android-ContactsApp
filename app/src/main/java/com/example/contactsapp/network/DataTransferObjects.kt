@@ -1,10 +1,7 @@
 package com.example.contactsapp.network
 
 import com.example.contactsapp.database.Contact
-import com.example.contactsapp.domain.ContactProperty
-import com.example.contactsapp.domain.Location
-import com.example.contactsapp.domain.Name
-import com.example.contactsapp.domain.Street
+import com.example.contactsapp.domain.*
 import com.squareup.moshi.JsonClass
 
 /**
@@ -28,7 +25,8 @@ data class NetworkResult(
     val name: NetworkName,
     val location: NetworkLocation,
     val email: String,
-    val phone: String
+    val phone: String,
+    val picture: NetworkPicture
 )
 
 @JsonClass(generateAdapter = true)
@@ -53,6 +51,11 @@ data class NetworkStreet(
     val name: String
 )
 
+@JsonClass(generateAdapter = true)
+data class NetworkPicture(
+    val large: String
+)
+
 
 /** Convert Network result to Kotlin Object **/
 fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
@@ -71,7 +74,8 @@ fun NetworkContactContainer.asDomainModel(): List<ContactProperty> {
                 it.location.postcode
             ),
             email = it.email,
-            phone = it.phone
+            phone = it.phone,
+            picture = Picture(it.picture.large)
         )
     }
 }
@@ -90,7 +94,8 @@ fun NetworkContactContainer.asDatabaseModel(): List<Contact> {
             country = it.location.country,
             postcode = it.location.postcode,
             email = it.email,
-            phone = it.phone
+            phone = it.phone,
+            pictureLarge = it.picture.large
         )
     }
 }

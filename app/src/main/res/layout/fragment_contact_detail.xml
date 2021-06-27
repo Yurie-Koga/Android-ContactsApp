@@ -18,6 +18,7 @@
         android:orientation="vertical"
         tools:context=".ui.ContactDetailFragment">
 
+        <!-- Corner radius ImageView -->
         <androidx.cardview.widget.CardView
             android:id="@+id/detail_cardview_image"
             style="@style/detail_cardview_image"
@@ -26,11 +27,11 @@
 
             <ImageView
                 android:id="@+id/detail_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:scaleType="center"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_launcher_background"
+                app:imageUrl="@{contactDetailViewModel.contact.picture.large}"
                 tools:src="@drawable/ic_launcher_background"/>
 
         </androidx.cardview.widget.CardView>
