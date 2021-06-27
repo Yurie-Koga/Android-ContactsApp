@@ -1,7 +1,11 @@
 package com.example.contactsapp.util
 
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 /**
  * BindingAdapter for Contact Data in [list_item_contact.xml], [fragment_contact_detail.xml] ----------------------------------------------------------
@@ -46,3 +50,15 @@ fun TextView.setPhoneNumberFormatted(phone: String?) {
     }
 }
 
+/** Picture **/
+@BindingAdapter("imageUrl")
+fun ImageView.bindImage(imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+        Glide.with(context)
+            .load(imgUri)
+            // add loading and error images
+            .apply(RequestOptions())
+            .into(this)
+    }
+}
