@@ -30,4 +30,5 @@ An application that fetches random contact data and displays the details. Users 
 - Gradle: 4.2.1
 - Retrofit: 2.9.0
 - Moshi: 1.12.0
+- Glide: 4.8.0
 ````
