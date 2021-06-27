@@ -27,7 +27,7 @@ An application that fetches random contact data and displays the details. Users 
 ````
 - Kotlin: 1.5.10
 - Room: 2.3.0
-- Graadle: 4.2.1
+- Gradle: 4.2.1
 - Retrofit: 2.9.0
 - Moshi: 1.12.0
 ````
